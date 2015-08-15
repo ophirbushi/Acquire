@@ -13,8 +13,8 @@ D:\אופיר\Acquire\Acquire\bin\Debug\Acquire.pdb
 D:\אופיר\Acquire\Acquire\obj\Debug\Acquire.csprojResolveAssemblyReference.cache
 D:\אופיר\Acquire\Acquire\obj\Debug\Acquire.dll
 D:\אופיר\Acquire\Acquire\obj\Debug\Acquire.pdb
+C:\Ophir\Programming\Repositories\Acquire\Acquire\bin\Debug\Acquire.exe
 C:\Ophir\Programming\Repositories\Acquire\Acquire\bin\Debug\Acquire.pdb
 C:\Ophir\Programming\Repositories\Acquire\Acquire\obj\Debug\Acquire.csprojResolveAssemblyReference.cache
-C:\Ophir\Programming\Repositories\Acquire\Acquire\obj\Debug\Acquire.pdb
-C:\Ophir\Programming\Repositories\Acquire\Acquire\bin\Debug\Acquire.exe
 C:\Ophir\Programming\Repositories\Acquire\Acquire\obj\Debug\Acquire.exe
+C:\Ophir\Programming\Repositories\Acquire\Acquire\obj\Debug\Acquire.pdb
