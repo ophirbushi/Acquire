@@ -21,3 +21,15 @@ D:\אופיר\Acquire\AcquireSimulator\bin\Debug\Acquire.pdb
 D:\אופיר\Acquire\AcquireSimulator\obj\Debug\AcquireSimulator.exe
 D:\אופיר\Acquire\AcquireSimulator\obj\Debug\AcquireSimulator.pdb
 C:\Users\User\Desktop\Ophir\Acquire\AcquireSimulator\obj\Debug\AcquireSimulator.StockSelectionDialog.resources
+C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\bin\Debug\AcquireSimulator.exe.config
+C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\bin\Debug\AcquireSimulator.exe
+C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\bin\Debug\AcquireSimulator.pdb
+C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\bin\Debug\Acquire.exe
+C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\bin\Debug\Acquire.pdb
+C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\obj\Debug\AcquireSimulator.csprojResolveAssemblyReference.cache
+C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\obj\Debug\AcquireSimulator.AcquireSimulatorForm.resources
+C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\obj\Debug\AcquireSimulator.Properties.Resources.resources
+C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\obj\Debug\AcquireSimulator.StockSelectionDialog.resources
+C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\obj\Debug\AcquireSimulator.csproj.GenerateResource.Cache
+C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\obj\Debug\AcquireSimulator.exe
+C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\obj\Debug\AcquireSimulator.pdb
