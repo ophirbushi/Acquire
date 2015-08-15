@@ -139,11 +139,21 @@ namespace Acquire
             return GetNeighbors(card).First(group => group.Hotel != Hotel.Neutral).Hotel;
         }
 
+        /// <summary>
+        /// Gets the hotels involved in a merge caused by a tile card.
+        /// </summary>
+        /// <param name="card">The merging tile card.</param>
+        /// <returns>The hotels involved in a merge caused by a tile card.</returns>
         public static List<Hotel> GetMergingHotels(TileCard card)
         {
             return GetNeighbors(card).Where(group => group.Hotel != Hotel.Neutral).Select(g => g.Hotel).ToList();
         }
 
+        /// <summary>
+        /// Gets the effect a specific tile card will cause, if the card is to be put on board.
+        /// </summary>
+        /// <param name="card">The card whose effect is checked.</param>
+        /// <returns>The effect the card is to cause, if is to be put on board.</returns>
         public static TileCardEffect GetEffect(TileCard card)
         {
             List<TileGroup> neighbors = GetNeighbors(card);
@@ -157,6 +167,8 @@ namespace Acquire
             else
                 return TileCardEffect.Enlarge;
         }
+
+        #region Private Methods
 
         private static void InitializeTileBank()
         {
@@ -282,5 +294,7 @@ namespace Acquire
             if (GroupChanged != null)
                 GroupChanged(tg, new EventArgs());
         }
+
+        #endregion
     }
 }
