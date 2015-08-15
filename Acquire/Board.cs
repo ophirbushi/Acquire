@@ -21,11 +21,13 @@ namespace Acquire
         {
             Tile tile;
             for (var x = 0; x < WIDTH; x++)
+            {
                 for (var y = 0; y < HEIGHT; y++)
                 {
                     tile = new Tile(x, y);
                     Tiles[x, y] = tile;
                 }
+            }
         }
     }
 }

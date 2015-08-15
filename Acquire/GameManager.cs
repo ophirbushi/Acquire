@@ -249,14 +249,11 @@ namespace Acquire
 
         #region Events
 
-
         private static void NotifyCurrentPlayerChanged()
         {
             if (CurrentPlayerChanged != null)
                 CurrentPlayerChanged(CurrentPlayer, new EventArgs());
         }
-
-
 
         #endregion
 

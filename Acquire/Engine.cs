@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Acquire
 {
-    class Program
+    class Engine
     {
-        void Main()
+        static void Main()
         {
 
         }

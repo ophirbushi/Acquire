@@ -56,6 +56,5 @@ namespace Acquire
         {
             return String.Format("Tile-Group : {0}", Hotel.Name);
         }
-
     }
 }

@@ -66,8 +66,7 @@ namespace Acquire
             {
                 HotelName = hotelName;
                 Quantity = 0;
-            }
-            
+            }        
         }
 
     }
