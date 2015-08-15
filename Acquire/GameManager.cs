@@ -2,36 +2,64 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-//using System.Threading.Tasks;
 
 namespace Acquire
 {
+    /// <summary>
+    /// The super class that controls the game flow.
+    /// </summary>
     public static class GameManager
     {
+        /// <summary>
+        /// The input source from which it receives the players' decisions.
+        /// </summary>
         public static IInput Input;
+
+        /// <summary>
+        /// This event is raised when a player finishes his turn.
+        /// </summary>
         public static event EventHandler CurrentPlayerChanged;
 
+        /// <summary>
+        /// The list of the players in the game.
+        /// </summary>
         public static List<Player> Players;
+
+        /// <summary>
+        /// The numbers of players.
+        /// </summary>
         public static int NumberOfPlayers { get { return Players.Count; } }
 
+        /// <summary>
+        /// The player whose turn it is at the moment.
+        /// </summary>
         private static Player _currentPlayer;
+
+        /// <summary>
+        /// The player whose turn it is at the moment.
+        /// </summary>
         public static Player CurrentPlayer
         {
             get { return _currentPlayer; }
-            set
+            private set
             {
                 _currentPlayer = value;
                 NotifyCurrentPlayerChanged();
             }
         }
 
+        /// <summary>
+        /// Signifies whether or not to end the game after the current player's turn.
+        /// </summary>
         private static bool _gameEnding = false;
 
 
         #region Super Methods
 
-
+        /// <summary>
+        /// Initializes all the game aspects, and starts the game.
+        /// </summary>
+        /// <param name="input">The input source from which it receives the players' decisions.</param>
         public static void NewGame(IInput input)
         {
             Input = input;
@@ -85,7 +113,6 @@ namespace Acquire
 
         #region Main Stages
 
-
         private static bool PutCardStage()
         {
             TileCardEffect effect;
@@ -108,17 +135,11 @@ namespace Acquire
             return true;
         }
 
-
         private static void BuyStocksStage()
         {
             if (PlayerCanBuyStocks())// && PlayerWantsToBuyStocks())
                 PlayerBuyStocks();
         }
-
-        //private static bool PlayerWantsToBuyStocks()
-        //{
-        //    return true;
-        //}
 
         private static bool PlayerCanBuyStocks()
         {
@@ -136,7 +157,6 @@ namespace Acquire
         #endregion
 
         #region Sub-Methods
-
 
         private static Player DetermineStartingPlayer()
         {
@@ -243,7 +263,6 @@ namespace Acquire
             // Temporary.
             Console.WriteLine(Message);
         }
-
 
         #endregion
 
