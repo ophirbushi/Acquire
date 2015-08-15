@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Acquire
 {
+    /// <summary>
+    /// The board manager handles the board, tile cards and interactions between them.
+    /// </summary>
     public static class BoardManager
     {
         /// <summary>
@@ -76,7 +79,7 @@ namespace Acquire
             switch (effect)
             {
                 case TileCardEffect.None:
-                    PutTileCard(card);
+                    PutTile(card);
                     break;
                 case TileCardEffect.Enlarge:
                     EnlageHotel(card, involvedHotel);
@@ -170,6 +173,9 @@ namespace Acquire
 
         #region Private Methods
 
+        /// <summary>
+        /// Generates tile cards in the TileCardBank for each tile in the board, and then shuffles the cards.
+        /// </summary>
         private static void InitializeTileBank()
         {
             TileCardBank = new List<TileCard>();
@@ -178,6 +184,9 @@ namespace Acquire
             ShuffleTileCards();
         }
 
+        /// <summary>
+        /// Shuffles the TileCardBank cards.
+        /// </summary>
         private static void ShuffleTileCards()
         {
             Random rnd = new Random();
@@ -188,6 +197,10 @@ namespace Acquire
             TileCardBank = cardsAndIndexList.Select(item => item.Card).ToList();
         }
 
+        /// <summary>
+        /// Checks if it is yet possible to setup a new hotel in the board.
+        /// </summary>
+        /// <returns>Whether or not it is yet possible to setup a new hotel in the board.</returns>
         private static bool IsSetUpPossible()
         {
             var remainingCards = new List<TileCard>(TileCardBank);
@@ -210,15 +223,26 @@ namespace Acquire
 
                 return false;
             }
-
         }
 
+        /// <summary>
+        /// Checks if two tile cards are neighbors.
+        /// </summary>
+        /// <param name="card1">The first card.</param>
+        /// <param name="card2">The second card.</param>
+        /// <returns>Whether or not the tile cards are neighbors.</returns>
         private static bool AreNeighbors(TileCard card1, TileCard card2)
         {
-            return (card1.X == card2.X && Math.Abs(card1.Y - card2.Y) == 1) ||
-                (Math.Abs(card1.X - card2.X) == 1 && card1.Y == card2.Y);
+            return card1.Point.Neighbors.Contains(card2.Point);
+            //return (card1.X == card2.X && Math.Abs(card1.Y - card2.Y) == 1) ||
+            //    (Math.Abs(card1.X - card2.X) == 1 && card1.Y == card2.Y);
         }
 
+        /// <summary>
+        /// Gets all the tile groups who are neighbors of a specific tile card.
+        /// </summary>
+        /// <param name="card">The tile card whose neighbors are sought.</param>
+        /// <returns>All the tile groups who are neighbors of a specific tile card.</returns>
         private static List<TileGroup> GetNeighbors(TileCard card)
         {
             var neighbors = new List<TileGroup>();
@@ -231,6 +255,11 @@ namespace Acquire
             return neighbors;
         }
 
+        /// <summary>
+        /// Setup a new hotel on board.
+        /// </summary>
+        /// <param name="card">The card who caused the setup.</param>
+        /// <param name="involvedHotel">The hotel chosen to be setup.</param>
         private static void SetUp(TileCard card, Hotel involvedHotel)
         {
             card.Tile.Occupied = true;
@@ -238,6 +267,11 @@ namespace Acquire
             SwallowGroups(card, group);
         }
 
+        /// <summary>
+        /// Merge hotels to one big hotel on board.
+        /// </summary>
+        /// <param name="card">The tile card which caused the merge.</param>
+        /// <param name="involvedHotel">The hotel which swallowes all his neighbor hotels.</param>
         private static void Merge(TileCard card, Hotel involvedHotel)
         {
             card.Tile.Occupied = true;
@@ -246,6 +280,11 @@ namespace Acquire
             SwallowGroups(card, group);
         }
 
+        /// <summary>
+        /// Enlarge a hotel on board.
+        /// </summary>
+        /// <param name="card">The tile card whose effect is enlarge.</param>
+        /// <param name="involvedHotel"></param>
         private static void EnlageHotel(TileCard card, Hotel involvedHotel)
         {
             // Maybe need to add hotel-group dictionary to the board.
@@ -254,16 +293,25 @@ namespace Acquire
             group.AddTiles(card.Tile);
             SwallowGroups(card, group);
         }
-
-        private static void PutTileCard(TileCard card)
+        
+        /// <summary>
+        /// Puts a new tile on board.
+        /// </summary>
+        /// <param name="card">The tile card representing the tile to be put.</param>
+        private static void PutTile(TileCard card)
         {
             card.Tile.Occupied = true;
             var group = new TileGroup(card.Tile);
 
-            // Only for the pre-game putting of cards where neighboring tiles do not set-up a new hotel.
+            // Only for the pre-game putting of tiles where neighboring tiles do not set-up a new hotel.
             SwallowGroups(card, group);
         }
 
+        /// <summary>
+        /// Make a specific tile group swallow all its neighboring groups.
+        /// </summary>
+        /// <param name="swallowingCard">The tile card which causes the swallowing of the other groups.</param>
+        /// <param name="swallowingGroup">The group which swallows all its neighboring groups.</param>
         private static void SwallowGroups(TileCard swallowingCard, TileGroup swallowingGroup)
         {
             swallowingCard.Tile.Hotel = swallowingGroup.Hotel;
@@ -277,7 +325,6 @@ namespace Acquire
                     neighboringGroups.Add(Board.PointGroupDictionary[neighbor]);
                 }
             }
-
             foreach (var group in neighboringGroups)
             {
                 group.Tiles.ForEach(tile => Board.PointGroupDictionary.Remove(tile.Point));
@@ -289,10 +336,14 @@ namespace Acquire
             NotifyGroupChanged(swallowingGroup);
         }
 
-        private static void NotifyGroupChanged(TileGroup tg)
+        /// <summary>
+        /// Raises an event notifying a tile group has changed, so the game logic will be updated.
+        /// </summary>
+        /// <param name="changedGroup">The tile group which have been changed.</param>
+        private static void NotifyGroupChanged(TileGroup changedGroup)
         {
             if (GroupChanged != null)
-                GroupChanged(tg, new EventArgs());
+                GroupChanged(changedGroup, new EventArgs());
         }
 
         #endregion
