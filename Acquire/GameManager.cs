@@ -79,6 +79,9 @@ namespace Acquire
             EndGame();
         }
 
+        /// <summary>
+        /// Represents a player's turn.
+        /// </summary>
         private static void MakeMove()
         {
             bool cardWasPut = PutCardStage();
@@ -91,19 +94,29 @@ namespace Acquire
                 CurrentPlayer = NextPlayer();
         }
 
+        /// <summary>
+        /// Ends the game, selling all the stocks, and showing the winner.
+        /// </summary>
         private static void EndGame()
         {
-            Players.ForEach(p => p.StockBank.AllStocks.ForEach(stock => 
-                HotelsManager.BuyStocksFromPlayer(p, 
+            Players.ForEach(p => p.StockBank.AllStocks.ForEach(stock =>
+                HotelsManager.BuyStocksFromPlayer(p,
                 HotelsManager.HotelNameHotelDictionary[stock.HotelName], stock.Quantity)));
             Input.ShowWinner();
         }
 
+        /// <summary>
+        /// Creates players. Temporary.
+        /// </summary>
         private static void InitPlayers()
         {
-            Players = new List<Player> { new Player(), new Player(), new Player(), new Player() };            
+            Players = new List<Player> { new Player(), new Player(), new Player(), new Player() };
         }
 
+        /// <summary>
+        /// Checks to see if the conditions are met to end the game, and if so whether the current player decides to end the game.
+        /// </summary>
+        /// <returns>Whether or not the game ends this turn.</returns>
         private static bool IsGameEnd()
         {
             return BoardManager.PossibleEndGame() && CurrentPlayer.EndGame();
@@ -118,7 +131,7 @@ namespace Acquire
             TileCardEffect effect;
             bool replaceAble;
             if (CurrentPlayer.TileCardBank.TrueForAll(c =>
-                BoardManager.GetEffect(c) == TileCardEffect.SetUp && 
+                BoardManager.GetEffect(c) == TileCardEffect.SetUp &&
                 !IsCardLegal(c, out effect, out replaceAble)))
             {
                 Announce("No legal cards");
@@ -128,7 +141,9 @@ namespace Acquire
             while (!IsCardLegal(card, out effect, out replaceAble))
             {
                 if (replaceAble)
+                {
                     BoardManager.ReplaceCard(CurrentPlayer, card);
+                }
                 card = CurrentPlayer.SelectCard();
             }
             PutCardOnBoard(CurrentPlayer, card, effect, PrePuttingProcess(card, effect)); // BoardManager.HandleEffect(card, effect, PrePuttingProcess(card, effect));
@@ -137,16 +152,8 @@ namespace Acquire
 
         private static void BuyStocksStage()
         {
-            if (PlayerCanBuyStocks())// && PlayerWantsToBuyStocks())
+            if (CanPlayerBuyStocks())// && PlayerWantsToBuyStocks())
                 PlayerBuyStocks();
-        }
-
-        private static bool PlayerCanBuyStocks()
-        {
-            bool canBuy = HotelsManager.ActiveHotels.Any(hotel => CurrentPlayer.Cash >= hotel.CurrentStockValue);
-            if (!canBuy)
-                GameManager.Announce("Not enough money to buy stocks.");
-            return canBuy;
         }
 
         private static void TakeCardStage()
@@ -208,6 +215,14 @@ namespace Acquire
             }
         }
 
+        private static bool CanPlayerBuyStocks()
+        {
+            bool canBuy = HotelsManager.ActiveHotels.Any(hotel => CurrentPlayer.Cash >= hotel.CurrentStockValue);
+            if (!canBuy)
+                GameManager.Announce("Not enough money to buy stocks.");
+            return canBuy;
+        }
+
         private static Hotel PrePuttingProcess(TileCard card, TileCardEffect effect)
         {
             switch (effect)
@@ -262,6 +277,11 @@ namespace Acquire
         {
             // Temporary.
             Console.WriteLine(Message);
+        }
+
+        public static void Publish(PublishState state)
+        {
+
         }
 
         #endregion

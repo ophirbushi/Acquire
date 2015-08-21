@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{522CF4A5-7C6C-4D42-828E-8F8341751E2C}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Acquire</RootNamespace>
     <AssemblyName>Acquire</AssemblyName>
@@ -49,7 +49,7 @@
     <Compile Include="GameState.cs" />
     <Compile Include="Hotel.cs" />
     <Compile Include="IInput.cs" />
-    <Compile Include="Engine.cs" />
+    <Compile Include="PublishState.cs" />
     <Compile Include="StockDecision.cs" />
     <Compile Include="StockPurchase.cs" />
     <Compile Include="Tile.cs" />

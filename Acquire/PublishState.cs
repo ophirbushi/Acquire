@@ -5,11 +5,8 @@ using System.Text;
 
 namespace Acquire
 {
-    class Engine
+    public class PublishState
     {
-        static void Main()
-        {
 
-        }
     }
 }

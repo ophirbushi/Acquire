@@ -24,7 +24,7 @@ C:\Users\User\Desktop\Ophir\Acquire\AcquireSimulator\obj\Debug\AcquireSimulator.
 C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\bin\Debug\AcquireSimulator.exe.config
 C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\bin\Debug\AcquireSimulator.exe
 C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\bin\Debug\AcquireSimulator.pdb
-C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\bin\Debug\Acquire.exe
+C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\bin\Debug\Acquire.dll
 C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\bin\Debug\Acquire.pdb
 C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\obj\Debug\AcquireSimulator.csprojResolveAssemblyReference.cache
 C:\Ophir\Programming\Repositories\Acquire\AcquireSimulator\obj\Debug\AcquireSimulator.AcquireSimulatorForm.resources

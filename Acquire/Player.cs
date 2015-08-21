@@ -34,14 +34,17 @@ namespace Acquire
 
         public TileCard SelectCard()
         {
-            throw new NotImplementedException();
-            //return (TileCard)GameManager.Input.GetInput(METHOD_NAME_SelectCard, 
-            //    new List<object>(this.TileCardBank));
+            var cards = new List<object>();
+            foreach (var card in TileCardBank)
+            {
+                cards.Add(card);
+            }
+            return (TileCard)GameManager.Input.GetInput(METHOD_NAME_SelectCard, cards);
         }
 
         public List<StockPurchase> SelectStocks()
         {
-             return GameManager.Input.GetSelectedStocks(this);
+            return GameManager.Input.GetSelectedStocks(this);
         }
 
         public bool EndGame()
@@ -57,9 +60,12 @@ namespace Acquire
 
         public Hotel SelectSetUpHotel()
         {
-            throw new NotImplementedException();
-            //return (Hotel)GameManager.Input.GetInput(METHOD_NAME_SelectSetUpHotel, new List<object>(HotelsManager.GetAvailableHotels()));
-            //throw new NotImplementedException();
+            var hotels = new List<object>();
+            foreach (var hotel in HotelsManager.GetAvailableHotels())
+            {
+                hotels.Add(hotel);
+            }
+            return (Hotel)GameManager.Input.GetInput(METHOD_NAME_SelectSetUpHotel, hotels);
         }
 
         public Hotel SelectMergerHotel(List<Hotel> mergingHotels)
