@@ -49,7 +49,7 @@
     <Compile Include="GameState.cs" />
     <Compile Include="Hotel.cs" />
     <Compile Include="IInput.cs" />
-    <Compile Include="PublishState.cs" />
+    <Compile Include="Publisher.cs" />
     <Compile Include="StockDecision.cs" />
     <Compile Include="StockPurchase.cs" />
     <Compile Include="Tile.cs" />

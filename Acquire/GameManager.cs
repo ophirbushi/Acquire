@@ -146,7 +146,8 @@ namespace Acquire
                 }
                 card = CurrentPlayer.SelectCard();
             }
-            PutCardOnBoard(CurrentPlayer, card, effect, PrePuttingProcess(card, effect)); // BoardManager.HandleEffect(card, effect, PrePuttingProcess(card, effect));
+            var involvedHotel = PrePuttingProcess(card, effect);
+            PutCardOnBoard(CurrentPlayer, card, effect, involvedHotel); // BoardManager.HandleEffect(card, effect, PrePuttingProcess(card, effect));
             return true;
         }
 
@@ -217,10 +218,21 @@ namespace Acquire
 
         private static bool CanPlayerBuyStocks()
         {
-            bool canBuy = HotelsManager.ActiveHotels.Any(hotel => CurrentPlayer.Cash >= hotel.CurrentStockValue);
-            if (!canBuy)
-                GameManager.Announce("Not enough money to buy stocks.");
-            return canBuy;
+            bool areStocksAvailable = HotelsManager.ActiveHotels.Count > 0 && HotelsManager.ActiveHotels.Any(hotel => HotelsManager.StockBank.GetNumberOfStocks(hotel.Name) > 0);
+            bool isEnoughMoney = false;
+            if (!areStocksAvailable)
+            {
+                Announce("There are no stocks available.");
+            }
+            else
+            {
+                isEnoughMoney = HotelsManager.ActiveHotels.Any(hotel => CurrentPlayer.Cash >= hotel.CurrentStockValue);
+                if (!isEnoughMoney)
+                {
+                    Announce("Not enough money to buy stocks.");
+                }
+            }
+            return areStocksAvailable && isEnoughMoney;
         }
 
         private static Hotel PrePuttingProcess(TileCard card, TileCardEffect effect)
@@ -279,10 +291,6 @@ namespace Acquire
             Console.WriteLine(Message);
         }
 
-        public static void Publish(PublishState state)
-        {
-
-        }
 
         #endregion
 
