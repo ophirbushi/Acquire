@@ -70,9 +70,12 @@ namespace Acquire
 
         public Hotel SelectMergerHotel(List<Hotel> mergingHotels)
         {
-            throw new NotImplementedException();
-            //return (Hotel)GameManager.Input.GetInput(METHOD_NAME_SelectMergerHotel, 
-            //    new List<object>(mergingHotels));
+            var mergingHotelsList = new List<object>();
+            foreach (var hotel in mergingHotels)
+            {
+                mergingHotelsList.Add(hotel);
+            }
+            return (Hotel)GameManager.Input.GetInput(METHOD_NAME_SelectMergerHotel, mergingHotelsList);
         }
 
         public StockDecision DecideStocks(Hotel mergingHotel, Hotel mergerHotel)
