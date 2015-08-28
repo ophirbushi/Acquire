@@ -126,6 +126,10 @@ namespace Acquire
 
         #region Main Stages
 
+        /// <summary>
+        /// The stage in a player's turn where the player puts a tile card on board, and the card's effect on the board is being processed.
+        /// </summary>
+        /// <returns>Whether a card was put on board. Returns false if there were no legal cards to be put.</returns>
         private static bool PutCardStage()
         {
             TileCardEffect effect;
@@ -151,12 +155,18 @@ namespace Acquire
             return true;
         }
 
+        /// <summary>
+        /// The stage in a player's turn where the player buys stocks.
+        /// </summary>
         private static void BuyStocksStage()
         {
             if (CanPlayerBuyStocks())// && PlayerWantsToBuyStocks())
                 PlayerBuyStocks();
         }
 
+        /// <summary>
+        /// The last stage in a player's turn, where the player takes a card from the tile card bank (If there are any cards left).
+        /// </summary>
         private static void TakeCardStage()
         {
             BoardManager.GiveCards(CurrentPlayer, 1);
@@ -166,6 +176,11 @@ namespace Acquire
 
         #region Sub-Methods
 
+        /// <summary>
+        /// Determining who starts the game by giving each player a tile card from the bank, putting it on board, 
+        /// and the player whose card is the closest card to A1 starts the game.
+        /// </summary>
+        /// <returns>The starting player.</returns>
         private static Player DetermineStartingPlayer()
         {
             foreach (Player p in Players)
@@ -177,17 +192,31 @@ namespace Acquire
             Player startingPlayer = ClosestToA1();
 
             foreach (Player p in Players)
-                PutCardOnBoard(p, p.TileCardBank.First(), TileCardEffect.None, Hotel.Neutral); //BoardManager.HandleEffect(p.TileCardBank.First(), TileCardEffect.None, Hotel.Neutral);
+                PutCardOnBoard(p, p.TileCardBank.First(), TileCardEffect.None, Hotel.Neutral); 
 
             return startingPlayer;
         }
 
+        /// <summary>
+        /// Putting a tile card on board, by removing the card from the player's bank, 
+        /// and calling the BoardManager to handle the effect the card has on the board.  
+        /// </summary>
+        /// <param name="player">The player who puts the tile card.</param>
+        /// <param name="card">The tile card being put.</param>
+        /// <param name="effect">Which effect the tile card has on the board.</param>
+        /// <param name="involvedHotel">The main hotel that is being affected by putting the tile card:
+        /// In case of enlarging an hotel, the involved hotel is the hotel being enlarged. In case of setting up a new hotel, the involved hotel
+        /// is the hotel the player decided to setup. In case of a merge effect, the involved hotel is the main hotel that swallows all his neighbor hotels.</param>
         private static void PutCardOnBoard(Player player, TileCard card, TileCardEffect effect, Hotel involvedHotel)
         {
             player.TileCardBank.Remove(card);
             BoardManager.HandleEffect(card, effect, involvedHotel);
         }
 
+        /// <summary>
+        /// Determining which player has the tile card which is the closest to A1.
+        /// </summary>
+        /// <returns>The player who has the tile card which is the closest to A1.</returns>
         private static Player ClosestToA1()
         {
             var playersAndDistances = Players.Select(player =>
