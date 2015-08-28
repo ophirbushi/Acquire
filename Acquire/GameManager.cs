@@ -192,7 +192,7 @@ namespace Acquire
             Player startingPlayer = ClosestToA1();
 
             foreach (Player p in Players)
-                PutCardOnBoard(p, p.TileCardBank.First(), TileCardEffect.None, Hotel.Neutral); 
+                PutCardOnBoard(p, p.TileCardBank.First(), TileCardEffect.None, Hotel.Neutral);
 
             return startingPlayer;
         }
@@ -230,6 +230,14 @@ namespace Acquire
             return playersAndDistances.First().P;
         }
 
+        /// <summary>
+        /// Determining whether or not a tile card is legal at the moment.(Can be put on board), 
+        /// and also whether the card's illegal status is permanent, which makes it replaceable.
+        /// </summary>
+        /// <param name="card">The tile card being tested.</param>
+        /// <param name="effect">The effect which the tile card has on the board.</param>
+        /// <param name="replaceAble">Whether or not the card is eligible for replacement since it is permanently illegal.</param>
+        /// <returns>Whether or not the tile card is legal at the moment.</returns>
         private static bool IsCardLegal(TileCard card, out TileCardEffect effect, out bool replaceAble)
         {
             effect = BoardManager.GetEffect(card);
@@ -237,7 +245,7 @@ namespace Acquire
             if (effect == TileCardEffect.Enlarge || effect == TileCardEffect.None)
                 return true;
             else if (effect == TileCardEffect.SetUp)
-                return HotelsManager.GetAvailableHotels().Count > 0; //.HotelsList.Any(hotel => hotel.CurrentSize == 0);
+                return HotelsManager.GetAvailableHotels().Count > 0;
             else
             {
                 replaceAble = !BoardManager.IsMergeLegal(card);
@@ -245,6 +253,10 @@ namespace Acquire
             }
         }
 
+        /// <summary>
+        /// Determening whether or not a player can buy stocks at the moment.
+        /// </summary>
+        /// <returns>Whether or not a player can buy stocks at the moment.</returns>
         private static bool CanPlayerBuyStocks()
         {
             bool areStocksAvailable = HotelsManager.ActiveHotels.Count > 0 && HotelsManager.ActiveHotels.Any(hotel => HotelsManager.StockBank.GetNumberOfStocks(hotel.Name) > 0);
@@ -264,6 +276,13 @@ namespace Acquire
             return areStocksAvailable && isEnoughMoney;
         }
 
+        /// <summary>
+        /// Determining which is the mainly involved hotel in putting a specific tile card on board -
+        /// by completing a specific process, which varies by the effect the tile card has on the board.
+        /// </summary>
+        /// <param name="card">The tile card to be put on board.</param>
+        /// <param name="effect">The effect the tile card has on the board.</param>
+        /// <returns>The mainly involved hotel in putting the tile card on board.</returns>
         private static Hotel PrePuttingProcess(TileCard card, TileCardEffect effect)
         {
             switch (effect)
@@ -275,7 +294,9 @@ namespace Acquire
                 case TileCardEffect.SetUp:
                     Hotel selectedHotel = CurrentPlayer.SelectSetUpHotel();
                     if (HotelsManager.StockBank.GetNumberOfStocks(selectedHotel.Name) > 0)
+                    {
                         HotelsManager.GiveStocksToPlayer(CurrentPlayer, selectedHotel.Name, 1);
+                    }
                     return selectedHotel;
                 case TileCardEffect.Merge:
                     return Merge(card);
@@ -285,28 +306,36 @@ namespace Acquire
             }
         }
 
+        /// <summary>
+        /// Performing a merge of hotels.
+        /// </summary>
+        /// <param name="card">The tile card which caused the merge.</param>
+        /// <returns>The hotel which swallowed the other hotels.</returns>
         private static Hotel Merge(TileCard card)
         {
             List<Hotel> mergingHotels = BoardManager.GetMergingHotels(card);
-            Hotel mergerHotel = DetermineMerger(mergingHotels);
+            Hotel mergerHotel = HotelsManager.DetermineMerger(mergingHotels);
             if (mergerHotel == null)
+            {
                 mergerHotel = CurrentPlayer.SelectMergerHotel(mergingHotels);
+            }
             mergingHotels.Remove(mergerHotel);
             HotelsManager.Merge(mergerHotel, mergingHotels);
             return mergerHotel;
         }
 
-        private static Hotel DetermineMerger(List<Hotel> mergingHotels)
-        {
-            mergingHotels = mergingHotels.OrderByDescending(hotel => hotel.CurrentSize).ToList();
-            return mergingHotels[0].CurrentSize != mergingHotels[1].CurrentSize ? mergingHotels[0] : null;
-        }
-
+        /// <summary>
+        /// Selling stocks to the current player.
+        /// </summary>
         private static void PlayerBuyStocks()
         {
             HotelsManager.SellStocksToPlayer(CurrentPlayer, CurrentPlayer.SelectStocks());
         }
 
+        /// <summary>
+        /// Gets the player whose turn it is now.
+        /// </summary>
+        /// <returns></returns>
         private static Player NextPlayer()
         {
             int index = Players.IndexOf(CurrentPlayer);
@@ -314,6 +343,10 @@ namespace Acquire
             return CurrentPlayer;
         }
 
+        /// <summary>
+        /// Announcing a message to all players.
+        /// </summary>
+        /// <param name="Message">The message to announce.</param>
         public static void Announce(string Message)
         {
             // Temporary.
@@ -325,6 +358,9 @@ namespace Acquire
 
         #region Events
 
+        /// <summary>
+        /// Notifies to all listeners that the current player has changed.
+        /// </summary>
         private static void NotifyCurrentPlayerChanged()
         {
             if (CurrentPlayerChanged != null)

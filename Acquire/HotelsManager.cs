@@ -49,6 +49,12 @@ namespace Acquire
             }
         }
 
+        public static Hotel DetermineMerger(List<Hotel> mergingHotels)
+        {
+            mergingHotels = mergingHotels.OrderByDescending(hotel => hotel.CurrentSize).ToList();
+            return mergingHotels[0].CurrentSize != mergingHotels[1].CurrentSize ? mergingHotels[0] : null;
+        }
+
         private static void DividePrizes(Hotel hotel)
         {
             int firstPrize = hotel.CurrentStockValue * 10;
