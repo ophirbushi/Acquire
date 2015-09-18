@@ -16,6 +16,11 @@ namespace Acquire
         public static IInput Input;
 
         /// <summary>
+        /// The destination to send game data information when it happens.
+        /// </summary>
+        public static IOutput Output;
+
+        /// <summary>
         /// This event is raised when a player finishes his turn.
         /// </summary>
         public static event EventHandler CurrentPlayerChanged;
@@ -60,9 +65,10 @@ namespace Acquire
         /// Initializes all the game aspects, and starts the game.
         /// </summary>
         /// <param name="input">The input source from which it receives the players' decisions.</param>
-        public static void NewGame(IInput input)
+        public static void NewGame(IInput input, IOutput output)
         {
             Input = input;
+            Output = output;
             Hotel.Initialize();
             Board.Initialize();
             HotelsManager.Initialize();
@@ -87,11 +93,17 @@ namespace Acquire
             bool cardWasPut = PutCardStage();
             BuyStocksStage();
             if (cardWasPut)
+            {
                 TakeCardStage();
+            }
             if (IsGameEnd())
+            {
                 _gameEnding = true;
+            }
             else
+            {
                 CurrentPlayer = NextPlayer();
+            }
         }
 
         /// <summary>
@@ -111,6 +123,7 @@ namespace Acquire
         private static void InitPlayers()
         {
             Players = new List<Player> { new Player(), new Player(), new Player(), new Player() };
+            Output.PlayerList(Players);
         }
 
         /// <summary>
@@ -138,7 +151,7 @@ namespace Acquire
                 BoardManager.GetEffect(c) == TileCardEffect.SetUp &&
                 !IsCardLegal(c, out effect, out replaceAble)))
             {
-                Announce("No legal cards");
+                Output.PlayerPutsCard(CurrentPlayer, null, TileCardEffect.None, null);
                 return false;
             }
             TileCard card = CurrentPlayer.SelectCard();
@@ -160,8 +173,10 @@ namespace Acquire
         /// </summary>
         private static void BuyStocksStage()
         {
-            if (CanPlayerBuyStocks())// && PlayerWantsToBuyStocks())
+            if (CanPlayerBuyStocks())
+            {
                 PlayerBuyStocks();
+            }           
         }
 
         /// <summary>
@@ -184,7 +199,9 @@ namespace Acquire
         private static Player DetermineStartingPlayer()
         {
             foreach (Player p in Players)
+            {
                 BoardManager.GiveCards(p, 1);
+            }
 
             // All players are supposed to have one card now.
             Debug.Assert(!Players.Any(p => p.TileCardBank.Count != 1));
@@ -192,7 +209,9 @@ namespace Acquire
             Player startingPlayer = ClosestToA1();
 
             foreach (Player p in Players)
+            {
                 PutCardOnBoard(p, p.TileCardBank.First(), TileCardEffect.None, Hotel.Neutral);
+            }
 
             return startingPlayer;
         }
@@ -210,6 +229,7 @@ namespace Acquire
         private static void PutCardOnBoard(Player player, TileCard card, TileCardEffect effect, Hotel involvedHotel)
         {
             player.TileCardBank.Remove(card);
+            Output.PlayerPutsCard(player, card, effect, involvedHotel);
             BoardManager.HandleEffect(card, effect, involvedHotel);
         }
 
@@ -227,7 +247,9 @@ namespace Acquire
                     (player.TileCardBank[0].Y * player.TileCardBank[0].Y))
                 });
             playersAndDistances = playersAndDistances.OrderBy(p => p.Distance).ToList();
-            return playersAndDistances.First().P;
+            Player closestToA1 = playersAndDistances.First().P;
+            Output.ClosestToA1(closestToA1);
+            return closestToA1;
         }
 
         /// <summary>
@@ -263,17 +285,20 @@ namespace Acquire
             bool isEnoughMoney = false;
             if (!areStocksAvailable)
             {
-                Announce("There are no stocks available.");
+                Output.CanPlayerBuyStocks(IsPlayerAbleToBuyStocks.NoAvailableStocks);
+                return false;
             }
             else
             {
                 isEnoughMoney = HotelsManager.ActiveHotels.Any(hotel => CurrentPlayer.Cash >= hotel.CurrentStockValue);
                 if (!isEnoughMoney)
                 {
-                    Announce("Not enough money to buy stocks.");
+                    Output.CanPlayerBuyStocks(IsPlayerAbleToBuyStocks.NotEnoughMoney);
+                    return false;
                 }
             }
-            return areStocksAvailable && isEnoughMoney;
+            Output.CanPlayerBuyStocks(IsPlayerAbleToBuyStocks.CanBuy);
+            return true;
         }
 
         /// <summary>

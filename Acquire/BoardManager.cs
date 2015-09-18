@@ -37,6 +37,7 @@ namespace Acquire
         /// <param name="card">The illegal card to replace.</param>
         public static void ReplaceCard(Player player, TileCard card)
         {
+            GameManager.Output.ReplaceCard(player, card);
             player.TileCardBank.Remove(card);
             GiveCards(player, 1);
         }
@@ -56,10 +57,11 @@ namespace Acquire
                     card = TileCardBank.First();
                     TileCardBank.Remove(card);
                     player.TileCardBank.Add(card);
+                    GameManager.Output.PlayerReceivedCard(player, card);
                 }
                 else
                 {
-                    GameManager.Announce("No more cards in the deck.");
+                    GameManager.Output.PlayerReceivedCard(player, null);
                     return;
                 }
             }

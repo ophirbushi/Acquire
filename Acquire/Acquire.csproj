@@ -51,7 +51,8 @@
     <Compile Include="BoardPoint.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Hotel.cs" />
-    <Compile Include="IInput.cs" />
+    <Compile Include="Interfaces\IInput.cs" />
+    <Compile Include="Interfaces\IOutput.cs" />
     <Compile Include="Publisher.cs" />
     <Compile Include="StockDecision.cs" />
     <Compile Include="StockPurchase.cs" />
