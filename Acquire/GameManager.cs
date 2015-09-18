@@ -289,7 +289,7 @@ namespace Acquire
             bool isEnoughMoney = false;
             if (!areStocksAvailable)
             {
-                Output.CanPlayerBuyStocks(IsPlayerAbleToBuyStocks.NoAvailableStocks);
+                Output.CanPlayerBuyStocks(CurrentPlayer, IsPlayerAbleToBuyStocks.NoAvailableStocks);
                 return false;
             }
             else
@@ -297,11 +297,11 @@ namespace Acquire
                 isEnoughMoney = HotelsManager.ActiveHotels.Any(hotel => CurrentPlayer.Cash >= hotel.CurrentStockValue);
                 if (!isEnoughMoney)
                 {
-                    Output.CanPlayerBuyStocks(IsPlayerAbleToBuyStocks.NotEnoughMoney);
+                    Output.CanPlayerBuyStocks(CurrentPlayer, IsPlayerAbleToBuyStocks.NotEnoughMoney);
                     return false;
                 }
             }
-            Output.CanPlayerBuyStocks(IsPlayerAbleToBuyStocks.CanBuy);
+            Output.CanPlayerBuyStocks(CurrentPlayer, IsPlayerAbleToBuyStocks.CanBuy);
             return true;
         }
 
