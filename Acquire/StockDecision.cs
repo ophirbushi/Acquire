@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Acquire
 {
-    public class StockDecision
+    public struct StockDecision
     {
         public Player Player;
 

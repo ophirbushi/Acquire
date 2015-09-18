@@ -1,7 +1,7 @@
 ﻿
 namespace Acquire
 {
-    public class StockPurchase
+    public struct StockPurchase
     {
         public readonly Hotel Hotel;
         public readonly int Quantity;
