@@ -37,13 +37,13 @@ namespace Acquire
 
         public void PlayerBuysStocks(List<StockPurchase> playerStockDecisions)
         {
-            
+
         }
 
         public void PlayerList(List<Player> players)
         {
             _sb.AppendFormat("{0}: ", nameof(PlayerList));
-            foreach(var p in players)
+            foreach (var p in players)
             {
                 _sb.AppendFormat("{0}, ", p);
             }
@@ -59,12 +59,14 @@ namespace Acquire
 
         public void PlayerReceivedCard(Player player, TileCard card, DidPlayerReceiveCard didPlayerReceiveCard)
         {
-
-        }
-
-        public void PlayerStockDecision(StockDecision decision)
-        {
-
+            if (didPlayerReceiveCard == DidPlayerReceiveCard.Received && card != null)
+            {
+                Log(string.Format("{0}: {1} received {2}", nameof(PlayerReceivedCard), player, card));
+            }
+            else
+            {
+                Log(string.Format("{0}: {1} did not take a card, reason - {2}", nameof(PlayerReceivedCard), player, didPlayerReceiveCard));
+            }
         }
 
         public void ReplaceCard(Player player, TileCard card)
@@ -75,6 +77,16 @@ namespace Acquire
         public void ShowWinner(List<Player> players)
         {
 
+        }
+
+        public void PlayerStockDecision(Player player, StockDecision decision)
+        {
+
+        }
+
+        public void PlayerSetsUpHotel(Player player, Hotel setUpHotel)
+        {
+            Log(string.Format("{0}: {1} sets up {2}", nameof(PlayerSetsUpHotel), player, setUpHotel));
         }
     }
 }

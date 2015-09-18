@@ -12,7 +12,8 @@ namespace Acquire
         void CanPlayerBuyStocks(Player player, IsPlayerAbleToBuyStocks isPlayerAbleToBuyStocks);
         void PlayerBuysStocks(List<StockPurchase> playerStockDecisions);
         void ShowWinner(List<Player> players);
-        void PlayerStockDecision(StockDecision decision);
+        void PlayerStockDecision(Player player, StockDecision decision);
+        void PlayerSetsUpHotel(Player player, Hotel setUpHotel);
     }
 
     public enum IsPlayerAbleToBuyStocks

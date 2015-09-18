@@ -65,7 +65,9 @@ namespace Acquire
             {
                 hotels.Add(hotel);
             }
-            return (Hotel)GameManager.Input.GetInput(METHOD_NAME_SelectSetUpHotel, hotels);
+            var selectedHotel = (Hotel)GameManager.Input.GetInput(METHOD_NAME_SelectSetUpHotel, hotels);
+            GameManager.Output.PlayerSetsUpHotel(this, selectedHotel);
+            return selectedHotel;
         }
 
         public Hotel SelectMergerHotel(List<Hotel> mergingHotels)
@@ -81,7 +83,7 @@ namespace Acquire
         public StockDecision DecideStocks(Hotel mergingHotel, Hotel mergerHotel)
         {
             var decision = (StockDecision)GameManager.Input.GetStockDecision(this, mergingHotel, mergerHotel);
-            GameManager.Output.PlayerStockDecision(decision);
+            GameManager.Output.PlayerStockDecision(this, decision);
             return decision;
         }
 
