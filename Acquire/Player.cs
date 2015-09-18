@@ -80,7 +80,9 @@ namespace Acquire
 
         public StockDecision DecideStocks(Hotel mergingHotel, Hotel mergerHotel)
         {
-            return (StockDecision)GameManager.Input.GetStockDecision(this, mergingHotel, mergerHotel);
+            var decision = (StockDecision)GameManager.Input.GetStockDecision(this, mergingHotel, mergerHotel);
+            GameManager.Output.PlayerStockDecision(decision);
+            return decision;
         }
 
         public override string ToString()

@@ -96,6 +96,10 @@ namespace Acquire
             {
                 TakeCardStage();
             }
+            else
+            {
+                Output.PlayerReceivedCard(CurrentPlayer, null, DidPlayerReceiveCard.PlayerDidNotPutCardThisTurn);
+            }
             if (IsGameEnd())
             {
                 _gameEnding = true;
@@ -114,7 +118,7 @@ namespace Acquire
             Players.ForEach(p => p.StockBank.AllStocks.ForEach(stock =>
                 HotelsManager.BuyStocksFromPlayer(p,
                 HotelsManager.HotelNameHotelDictionary[stock.HotelName], stock.Quantity)));
-            Input.ShowWinner();
+            Output.ShowWinner(Players);
         }
 
         /// <summary>
@@ -354,7 +358,9 @@ namespace Acquire
         /// </summary>
         private static void PlayerBuyStocks()
         {
-            HotelsManager.SellStocksToPlayer(CurrentPlayer, CurrentPlayer.SelectStocks());
+            var playerStockDecisions = CurrentPlayer.SelectStocks();
+            HotelsManager.SellStocksToPlayer(CurrentPlayer, playerStockDecisions);
+            Output.PlayerBuysStocks(playerStockDecisions);
         }
 
         /// <summary>
@@ -363,8 +369,7 @@ namespace Acquire
         /// <returns></returns>
         private static Player NextPlayer()
         {
-            int index = Players.IndexOf(CurrentPlayer);
-            CurrentPlayer = CurrentPlayer != Players.Last() ? Players[index + 1] : Players[0];
+            CurrentPlayer = GetNextPlayer(CurrentPlayer);
             return CurrentPlayer;
         }
 
@@ -378,6 +383,17 @@ namespace Acquire
             Console.WriteLine(Message);
         }
 
+        /// <summary>
+        /// Gets the player whose turn it is after a certain player.
+        /// </summary>
+        /// <param name="player">The player to check.</param>
+        /// <returns>The player who plays after the given player.</returns>
+        public static Player GetNextPlayer(Player player)
+        {
+            int index = Players.IndexOf(player);
+            var nextPlayer = index != Players.Count - 1 ? Players[index + 1] : Players[0];
+            return nextPlayer;
+        }
 
         #endregion
 

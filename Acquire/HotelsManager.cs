@@ -101,6 +101,7 @@ namespace Acquire
             {
                 decision = decider.DecideStocks(mergingHotel, mergerHotel);
                 ProcessDecision(decision);
+                decider = GameManager.GetNextPlayer(decider);
             }
         }
 

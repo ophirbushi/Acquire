@@ -57,11 +57,11 @@ namespace Acquire
                     card = TileCardBank.First();
                     TileCardBank.Remove(card);
                     player.TileCardBank.Add(card);
-                    GameManager.Output.PlayerReceivedCard(player, card);
+                    GameManager.Output.PlayerReceivedCard(player, card, DidPlayerReceiveCard.Received);
                 }
                 else
                 {
-                    GameManager.Output.PlayerReceivedCard(player, null);
+                    GameManager.Output.PlayerReceivedCard(player, null, DidPlayerReceiveCard.BankIsEmpty);
                     return;
                 }
             }
