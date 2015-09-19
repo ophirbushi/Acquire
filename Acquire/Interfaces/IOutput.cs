@@ -14,6 +14,7 @@ namespace Acquire
         void ShowWinner(List<Player> players);
         void PlayerStockDecision(Player player, StockDecision decision);
         void PlayerSetsUpHotel(Player player, Hotel setUpHotel);
+        void NewTurn(Player currentPlayer);
     }
 
     public enum IsPlayerAbleToBuyStocks

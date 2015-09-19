@@ -49,11 +49,12 @@
     <Compile Include="Board.cs" />
     <Compile Include="BoardManager.cs" />
     <Compile Include="BoardPoint.cs" />
-    <Compile Include="GameState.cs" />
+    <Compile Include="GameState\GameState.cs" />
     <Compile Include="Hotel.cs" />
     <Compile Include="Interfaces\IInput.cs" />
     <Compile Include="Interfaces\IOutput.cs" />
     <Compile Include="Publisher\Publisher.cs" />
+    <Compile Include="Publisher\XmlHandler.cs" />
     <Compile Include="StockDecision.cs" />
     <Compile Include="StockPurchase.cs" />
     <Compile Include="Tile.cs" />

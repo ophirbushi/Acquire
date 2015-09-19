@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace Acquire
 {
@@ -12,10 +13,14 @@ namespace Acquire
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public readonly int X, Y;
-        public BoardPoint Point { get { return new BoardPoint(X, Y); } }
+        [XmlAttribute]
+        public int X, Y;
+        public BoardPoint Point {
+            get { return new BoardPoint(X, Y); }         
+        }
 
         private bool _occupied = false;
+        [XmlAttribute]
         public bool Occupied
         {
             get { return _occupied; }
@@ -37,6 +42,10 @@ namespace Acquire
             }
         }
 
+        public Tile()
+        {
+
+        }
         public Tile(int x, int y)
         {
             X = x;

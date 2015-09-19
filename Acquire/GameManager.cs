@@ -85,11 +85,18 @@ namespace Acquire
             EndGame();
         }
 
+        public static void LoadGame(GameState state, IInput input, IOutput output)
+        {
+
+        }
+
         /// <summary>
         /// Represents a player's turn.
         /// </summary>
         private static void MakeMove()
         {
+            Output.NewTurn(CurrentPlayer);
+
             bool cardWasPut = PutCardStage();
             BuyStocksStage();
             if (cardWasPut)

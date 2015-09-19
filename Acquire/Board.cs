@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-
+using System.Xml.Serialization;
 
 namespace Acquire
 {
@@ -25,7 +25,14 @@ namespace Acquire
         /// <summary>
         /// The tiles of the board.
         /// </summary>
+        [XmlIgnore]
         public static readonly Tile[,] Tiles = new Tile[WIDTH, HEIGHT];
+
+        /// <summary>
+        /// For xml serialization.
+        /// </summary>
+        public static List<Tile> TileList = new List<Tile>();
+
 
         /// <summary>
         /// The current tile groups on board.
@@ -49,6 +56,8 @@ namespace Acquire
                 {
                     tile = new Tile(x, y);
                     Tiles[x, y] = tile;
+
+                    TileList.Add(tile);
                 }
             }
         }

@@ -25,6 +25,31 @@ namespace Acquire
             }
         }
 
+        private GameState SaveState(StepInPlayerTurn stepInPlayerTurn)
+        {
+            var gameState = new GameState
+            {
+                StepInTurn = stepInPlayerTurn,
+                Players = GameManager.Players,
+                CurrentPlayer = GameManager.CurrentPlayer,
+                TileList = Board.TileList,
+                TileGroups = Board.TileGroups,
+                //PointGroupDictionary = Board.PointGroupDictionary,
+                TileCardBank = BoardManager.TileCardBank,
+                HotelsList = HotelsManager.HotelsList,
+               // HotelNameHotelDictionary = HotelsManager.HotelNameHotelDictionary,
+                StockBank = HotelsManager.StockBank,
+            };
+            XmlHandler.SerializeGameState(gameState);
+            return gameState;
+        }
+
+        public void NewTurn(Player currentPlayer)
+        {
+            Log(string.Format("{0}: It is {1}'s turn", nameof(NewTurn), currentPlayer));
+            SaveState(StepInPlayerTurn.NewTurn);
+        }
+
         public void CanPlayerBuyStocks(Player player, IsPlayerAbleToBuyStocks isPlayerAbleToBuyStocks)
         {
             Log(string.Format("{0}: {1} - {2}", nameof(CanPlayerBuyStocks), player, isPlayerAbleToBuyStocks));

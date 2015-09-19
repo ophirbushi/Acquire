@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Xml.Serialization;
 
 namespace Acquire
 {
@@ -15,7 +16,10 @@ namespace Acquire
         public StockSlot Reviera = new StockSlot(Hotel.HOTEL_NAME_REVIERA);
         public StockSlot Holiday = new StockSlot(Hotel.HOTEL_NAME_HOLIDAY);
 
+        [XmlIgnore]
         public readonly List<StockSlot> AllStocks;
+
+        [XmlIgnore]
         public readonly Dictionary<string, StockSlot> NameStocksDictionary;
 
         public StockBank()
@@ -57,8 +61,15 @@ namespace Acquire
 
         public class StockSlot
         {
+            [XmlAttribute]
+            public string HotelName;
+            [XmlAttribute]
             public int Quantity { get; set; }
-            public readonly string HotelName;
+ 
+            public StockSlot()
+            {
+
+            }
             public StockSlot(string hotelName)
             {
                 HotelName = hotelName;

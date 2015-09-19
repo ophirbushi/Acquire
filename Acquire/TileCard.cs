@@ -2,16 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace Acquire
 {
     public class TileCard
     {
-        public int X { get { return Tile.X; } }
-        public int Y { get { return Tile.Y; } }
+        [XmlAttribute]
+        public int X { get { return Tile.X; } set { X = value; } }
+        [XmlAttribute]
+        public int Y { get { return Tile.Y; } set { Y = value; } }
         public BoardPoint Point { get { return new BoardPoint(X, Y); } }
 
         public readonly Tile Tile;
+
+        public TileCard()
+        {
+
+        }
 
         public TileCard(Tile tile)
         {

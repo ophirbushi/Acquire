@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Xml.Serialization;
 
 namespace Acquire
 {
@@ -48,12 +49,14 @@ namespace Acquire
         /// <summary>
         /// The name of the hotel.
         /// </summary>
-        public readonly string Name;
+        [XmlAttribute]
+        public string Name;
 
         /// <summary>
         /// The prestige level of the hotel.
         /// </summary>
-        public readonly HotelPrestige Prestige;
+        [XmlAttribute]
+        public HotelPrestige Prestige;
 
         /// <summary>
         /// The hotel's current size (The number of tiles it is consisted of).
@@ -64,6 +67,11 @@ namespace Acquire
         /// The current price of a stock of the hotel.
         /// </summary>
         public int CurrentStockValue { get { return CalculateStockValue(); } }
+
+        public Hotel()
+        {
+
+        }
 
         /// <summary>
         /// Creates a new hotel, specifying its name.
