@@ -31,12 +31,11 @@ namespace Acquire
             {
                 StepInTurn = stepInPlayerTurn,
                 Players = GameManager.Players,
-                CurrentPlayer = GameManager.CurrentPlayer,
+                CurrentPlayerID = GameManager.CurrentPlayer.PlayerID,
                 TileList = Board.TileList,
                 TileGroups = Board.TileGroups,
                 //PointGroupDictionary = Board.PointGroupDictionary,
                 TileCardBank = BoardManager.TileCardBank,
-                HotelsList = HotelsManager.HotelsList,
                // HotelNameHotelDictionary = HotelsManager.HotelNameHotelDictionary,
                 StockBank = HotelsManager.StockBank,
             };

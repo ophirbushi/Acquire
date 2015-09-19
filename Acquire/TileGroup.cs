@@ -14,18 +14,16 @@ namespace Acquire
 
         public TileGroup()
         {
-            Board.TileGroups.Add(this);
+
         }
 
         public TileGroup(Tile tile)
         {
-            Board.TileGroups.Add(this);
             AddTiles(tile);
         }
 
         public TileGroup(List<Tile> tiles)
         {
-            Board.TileGroups.Add(this);
             AddTiles(tiles);
         }
 

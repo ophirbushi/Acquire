@@ -257,6 +257,11 @@ namespace Acquire
             return neighbors;
         }
 
+        private static void AddGroup(TileGroup group)
+        {
+            Board.TileGroups.Add(group);
+        }
+
         /// <summary>
         /// Setup a new hotel on board.
         /// </summary>
@@ -266,6 +271,7 @@ namespace Acquire
         {
             card.Tile.Occupied = true;
             var group = new TileGroup(card.Tile) { Hotel = involvedHotel };
+            AddGroup(group);
             SwallowGroups(card, group);
         }
 
@@ -304,6 +310,7 @@ namespace Acquire
         {
             card.Tile.Occupied = true;
             var group = new TileGroup(card.Tile);
+            AddGroup(group);
 
             // Only for the pre-game putting of tiles where neighboring tiles do not set-up a new hotel.
             SwallowGroups(card, group);

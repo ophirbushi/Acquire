@@ -14,9 +14,14 @@ namespace Acquire
 
         public static void SerializeGameState(GameState gameState)
         {
-            using (var sw = new StreamWriter(Environment.CurrentDirectory + "/gamestate.xml"))
+            var path = Environment.CurrentDirectory + "/gamestate.xml";
+            using (var sw = new StreamWriter(path))
             {
                 _xmlSerializer.Serialize(sw, gameState);
+            }
+            using (var sr = new StreamReader(path))
+            {
+                GameState gs = _xmlSerializer.Deserialize(sr) as GameState;
             }
         }
     }

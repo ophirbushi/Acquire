@@ -16,6 +16,7 @@ namespace Acquire
         public const string METHOD_NAME_SelectMergerHotel = "SelectMergerHotel";
         public const string METHOD_NAME_EndGame = "EndGame";
 
+        public int PlayerID;
         public string Name;
         public int Cash = 5000;
         public StockBank StockBank = new StockBank();
@@ -26,10 +27,17 @@ namespace Acquire
         public Player()
         {
             PLAYERS_COUNT++;
+            PlayerID = PLAYERS_COUNT;
             Name = "Player" + PLAYERS_COUNT;
 
             if (_rnd == null)
                 _rnd = new Random();
+        }
+
+        public Player(int playerID, string name)
+        {
+            PlayerID = playerID;
+            Name = name;
         }
 
         public TileCard SelectCard()

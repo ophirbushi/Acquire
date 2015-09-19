@@ -11,7 +11,7 @@ namespace Acquire
         // For the GameManager.
         public StepInPlayerTurn StepInTurn { get; set; }
         public List<Player> Players { get; set; }
-        public Player CurrentPlayer { get; set; }
+        public int CurrentPlayerID { get; set; }
 
         // For the Board.
         public List<Tile> TileList { get; set; }
@@ -22,7 +22,6 @@ namespace Acquire
         public List<TileCard> TileCardBank { get; set; }
 
         // For the HotelManager.
-        public List<Hotel> HotelsList { get; set; }
         public StockBank StockBank { get; set; }
         //public Dictionary<string, Hotel> HotelNameHotelDictionary { get; set; }
     }

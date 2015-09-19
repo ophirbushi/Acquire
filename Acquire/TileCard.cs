@@ -8,10 +8,11 @@ namespace Acquire
 {
     public class TileCard
     {
+
         [XmlAttribute]
-        public int X { get { return Tile.X; } set { X = value; } }
+        public int X { get { return Tile.X; } set {  } }
         [XmlAttribute]
-        public int Y { get { return Tile.Y; } set { Y = value; } }
+        public int Y { get { return Tile.Y; } set {  } }
         public BoardPoint Point { get { return new BoardPoint(X, Y); } }
 
         public readonly Tile Tile;
