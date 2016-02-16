@@ -37,6 +37,10 @@ namespace Acquire
         /// </summary>
         public static Dictionary<BoardPoint, TileGroup> PointGroupDictionary = new Dictionary<BoardPoint, TileGroup>();
 
+
+        public static Dictionary<BoardPoint, Tile> PointTileDictionary = new Dictionary<BoardPoint, Tile>();
+
+
         /// <summary>
         /// Generates the board's tiles according to its width and height.
         /// </summary>
