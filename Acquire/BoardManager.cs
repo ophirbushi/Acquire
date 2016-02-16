@@ -182,7 +182,7 @@ namespace Acquire
         {
             TileCardBank = new List<TileCard>();
             foreach (Tile tile in Board.Tiles)
-                TileCardBank.Add(new TileCard(tile));
+                TileCardBank.Add(new TileCard(tile.Point));
             ShuffleTileCards();
         }
 

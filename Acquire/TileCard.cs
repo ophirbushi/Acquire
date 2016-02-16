@@ -7,20 +7,21 @@ namespace Acquire
 {
     public class TileCard
     {
-        public int X { get { return Tile.X; } }
-        public int Y { get { return Tile.Y; } }
-        public BoardPoint Point { get { return new BoardPoint(X, Y); } }
+        public BoardPoint Point;
+
+        public int X { get { return Point.X; } }
+        public int Y { get { return Point.Y; } }
 
         public readonly Tile Tile;
 
-        public TileCard(Tile tile)
+        public TileCard(BoardPoint point)
         {
-            Tile = tile;
+            Point = point;
         }
 
         public override string ToString()
         {
-            return String.Format("{0},{1}", X, Y);
+            return String.Format("{0},{1}", Point.X, Point.Y);
         }
     }
 }

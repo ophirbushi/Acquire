@@ -12,8 +12,9 @@ namespace Acquire
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public readonly int X, Y;
-        public BoardPoint Point { get { return new BoardPoint(X, Y); } }
+        public BoardPoint Point;
+        public int X { get { return Point.X; } }
+        public int Y { get { return Point.Y; } }
 
         private bool _occupied = false;
         public bool Occupied
@@ -37,10 +38,9 @@ namespace Acquire
             }
         }
 
-        public Tile(int x, int y)
+        public Tile(BoardPoint point)
         {
-            X = x;
-            Y = y;
+            Point = point;
         }
 
         private void NotifyPropertyChanged(string propertyName)

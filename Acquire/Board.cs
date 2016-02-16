@@ -47,7 +47,7 @@ namespace Acquire
             {
                 for (var y = 0; y < HEIGHT; y++)
                 {
-                    tile = new Tile(x, y);
+                    tile = new Tile(new BoardPoint(x, y));
                     Tiles[x, y] = tile;
                 }
             }
