@@ -11,11 +11,6 @@ namespace Acquire
     {
         #region static properties
 
-        /// <summary>
-        /// The default hotel - if a tile is put on board, and isn't connected to any hotel, then its hotel is neutral.
-        /// </summary> 
-        public static Hotel Neutral;// = new Hotel(HOTEL_NAME_NEUTRAL); 
-
         public const string HOTEL_NAME_NEUTRAL = "Neutral";
         public const string HOTEL_NAME_EUROPLAZA = "Europlaza";
         public const string HOTEL_NAME_CONTINENTAL = "Continental";
@@ -34,6 +29,8 @@ namespace Acquire
             HOTEL_NAME_REVIERA,
             HOTEL_NAME_HOLIDAY
         };*/
+
+
 
         /// <summary>
         /// The prestige level of the hotel - affects its stock price.
@@ -97,8 +94,8 @@ namespace Acquire
         /// </summary>
         public static void Initialize()
         {
-            Neutral = new Hotel(HOTEL_NAME_NEUTRAL);
             HOTEL_NAMES = new List<string>{
+            HOTEL_NAME_NEUTRAL,
             HOTEL_NAME_EUROPLAZA,
             HOTEL_NAME_CONTINENTAL,
             HOTEL_NAME_OLYMPIA,
@@ -106,7 +103,8 @@ namespace Acquire
             HOTEL_NAME_LASVEGAS,
             HOTEL_NAME_REVIERA,
             HOTEL_NAME_HOLIDAY  };
-        }
+
+    }
 
         /// <summary>
         /// Calculates the hotels current stock value.

@@ -36,7 +36,7 @@ namespace AcquireSimulator
             // Board.TileChanged += Board_TileChanged;
             GameManager.CurrentPlayerChanged += GameManager_CurrentPlayerChanged;
 
-            _gameThread = new Thread(() => GameManager.NewGame(this, new Publisher()));
+            _gameThread = new Thread(() => GameManager.LoadGame(XmlHandler.DeserializeGameState(), this, new Publisher()));
             _gameThread.Start();
 
         }

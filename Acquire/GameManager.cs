@@ -87,7 +87,21 @@ namespace Acquire
 
         public static void LoadGame(GameState state, IInput input, IOutput output)
         {
+            Input = input;
+            Output = output;
+            Hotel.Initialize();
+            HotelsManager.Load(state.StockBank);
+            Board.Load(state.TileList, state.TileGroups);
+            BoardManager.Load(state.TileCardBank);
+       
+            Players = new List<Player>(state.Players);
+            CurrentPlayer = state.Players.First(player => player.PlayerID == state.CurrentPlayerID);
 
+            while (_gameEnding == false)
+            {
+                MakeMove();
+            }
+            EndGame();
         }
 
         /// <summary>
@@ -187,7 +201,7 @@ namespace Acquire
             if (CanPlayerBuyStocks())
             {
                 PlayerBuyStocks();
-            }           
+            }
         }
 
         /// <summary>
@@ -221,7 +235,7 @@ namespace Acquire
 
             foreach (Player p in Players)
             {
-                PutCardOnBoard(p, p.TileCardBank.First(), TileCardEffect.None, Hotel.Neutral);
+                PutCardOnBoard(p, p.TileCardBank.First(), TileCardEffect.None, HotelsManager.HotelNameHotelDictionary[Hotel.HOTEL_NAME_NEUTRAL]);
             }
 
             return startingPlayer;
@@ -324,7 +338,7 @@ namespace Acquire
             switch (effect)
             {
                 case TileCardEffect.None:
-                    return Hotel.Neutral;
+                    return HotelsManager.HotelNameHotelDictionary[Hotel.HOTEL_NAME_NEUTRAL];
                 case TileCardEffect.Enlarge:
                     return BoardManager.GetEnlargedHotel(card);
                 case TileCardEffect.SetUp:

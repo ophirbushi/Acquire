@@ -19,7 +19,6 @@ namespace Acquire
             {
                 _xmlSerializer.Serialize(sw, gameState);
             }
-
         }
 
         public static GameState DeserializeGameState()

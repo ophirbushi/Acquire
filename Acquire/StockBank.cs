@@ -20,7 +20,7 @@ namespace Acquire
         public readonly List<StockSlot> AllStocks;
 
         [XmlIgnore]
-        public readonly Dictionary<string, StockSlot> NameStocksDictionary;
+        public Dictionary<string, StockSlot> NameStocksDictionary;
 
         public StockBank()
         {

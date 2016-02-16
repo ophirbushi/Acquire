@@ -29,6 +29,11 @@ namespace Acquire
             InitializeTileBank();
         }
 
+        public static void Load(List<TileCard> tileCardBank)
+        {
+            TileCardBank = new List<TileCard>(tileCardBank);
+        }
+
         /// <summary>
         /// Replaces an illegal tile card given by a player with a card from the TileCardBank, if there are still cards left.
         /// This method assumes that the tile card it receives is indeed illegal. 
@@ -129,7 +134,7 @@ namespace Acquire
         {
             Debug.Assert(GetEffect(card) == TileCardEffect.Merge);
             var neighbors = GetNeighbors(card);
-            var immuneHotels = neighbors.Where(group => group.Hotel != Hotel.Neutral && group.Hotel.CurrentSize > 10).ToList();
+            var immuneHotels = neighbors.Where(group => group.Hotel != HotelsManager.HotelNameHotelDictionary[Hotel.HOTEL_NAME_NEUTRAL] && group.Hotel.CurrentSize > 10).ToList();
             return immuneHotels.Count < 2;
         }
 
@@ -141,7 +146,7 @@ namespace Acquire
         public static Hotel GetEnlargedHotel(TileCard card)
         {
             Debug.Assert(GetEffect(card) == TileCardEffect.Enlarge, "wrong effect");
-            return GetNeighbors(card).First(group => group.Hotel != Hotel.Neutral).Hotel;
+            return GetNeighbors(card).First(group => group.Hotel != HotelsManager.HotelNameHotelDictionary[Hotel.HOTEL_NAME_NEUTRAL]).Hotel;
         }
 
         /// <summary>
@@ -151,7 +156,7 @@ namespace Acquire
         /// <returns>The hotels involved in a merge caused by a tile card.</returns>
         public static List<Hotel> GetMergingHotels(TileCard card)
         {
-            return GetNeighbors(card).Where(group => group.Hotel != Hotel.Neutral).Select(g => g.Hotel).ToList();
+            return GetNeighbors(card).Where(group => group.Hotel != HotelsManager.HotelNameHotelDictionary[Hotel.HOTEL_NAME_NEUTRAL]).Select(g => g.Hotel).ToList();
         }
 
         /// <summary>
@@ -164,10 +169,10 @@ namespace Acquire
             List<TileGroup> neighbors = GetNeighbors(card);
             if (neighbors.Count == 0)
                 return TileCardEffect.None;
-            else if (!neighbors.Any(group => group.Hotel != Hotel.Neutral))
+            else if (!neighbors.Any(group => group.Hotel != HotelsManager.HotelNameHotelDictionary[Hotel.HOTEL_NAME_NEUTRAL]))
                 return TileCardEffect.SetUp;
-            else if (neighbors.Any(group => group.Hotel != Hotel.Neutral &&
-                group.Hotel != neighbors.First(g => g.Hotel != Hotel.Neutral).Hotel))
+            else if (neighbors.Any(group => group.Hotel != HotelsManager.HotelNameHotelDictionary[Hotel.HOTEL_NAME_NEUTRAL] &&
+                group.Hotel != neighbors.First(g => g.Hotel != HotelsManager.HotelNameHotelDictionary[Hotel.HOTEL_NAME_NEUTRAL]).Hotel))
                 return TileCardEffect.Merge;
             else
                 return TileCardEffect.Enlarge;
@@ -182,7 +187,9 @@ namespace Acquire
         {
             TileCardBank = new List<TileCard>();
             foreach (Tile tile in Board.Tiles)
-                TileCardBank.Add(new TileCard(tile));
+            {
+                TileCardBank.Add(new TileCard(tile.Point));
+            }
             ShuffleTileCards();
         }
 

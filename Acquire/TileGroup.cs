@@ -8,7 +8,7 @@ namespace Acquire
 {
     public class TileGroup
     {
-        public Hotel Hotel = Hotel.Neutral;
+        public Hotel Hotel = HotelsManager.HotelNameHotelDictionary[Hotel.HOTEL_NAME_NEUTRAL];
         public List<Tile> Tiles = new List<Tile>();
         public int Size { get { return Tiles.Count; } }
 

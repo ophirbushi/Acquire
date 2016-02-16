@@ -10,21 +10,27 @@ namespace Acquire
     {
 
         [XmlAttribute]
-        public int X { get { return Tile.X; } set {  } }
+        public int X;
         [XmlAttribute]
-        public int Y { get { return Tile.Y; } set {  } }
+        public int Y;
+
+        [XmlIgnore]
         public BoardPoint Point { get { return new BoardPoint(X, Y); } }
 
-        public readonly Tile Tile;
+        [XmlIgnore]
+        public Tile Tile {
+            get { return Board.PointTileDictionary[Point]; }
+        }
 
         public TileCard()
         {
 
         }
 
-        public TileCard(Tile tile)
+        public TileCard(BoardPoint point)
         {
-            Tile = tile;
+            X = point.X;
+            Y = point.Y;
         }
 
         public override string ToString()

@@ -11,7 +11,7 @@ namespace Acquire
     {
         public static List<Hotel> HotelsList;
         public static List<Hotel> ActiveHotels { get { return HotelsList.Where(h => h.CurrentSize > 0).ToList(); } }
-        public static StockBank StockBank;       
+        public static StockBank StockBank;
         public static Dictionary<string, Hotel> HotelNameHotelDictionary;
 
         public static void Initialize()
@@ -27,6 +27,20 @@ namespace Acquire
             StockBank = new StockBank();
             StockBank.Fill();
         }
+
+        public static void Load(StockBank stockBank)
+        {
+            HotelsList = new List<Hotel>();
+            HotelNameHotelDictionary = new Dictionary<string, Hotel>();
+            foreach (string hotelName in Hotel.HOTEL_NAMES)
+            {
+                var hotel = new Hotel(hotelName);
+                HotelsList.Add(hotel);
+                HotelNameHotelDictionary.Add(hotelName, hotel);
+            }
+            StockBank = stockBank;
+        }
+
 
         public static void GiveStocksToPlayer(Player player, string stockName, int quantity)
         {
@@ -87,6 +101,7 @@ namespace Acquire
             foreach (var p in secondPrizeReceivers)
                 GivePrize(p, secondPrize, false);
         }
+
 
         private static void GivePrize(Player player, int prize, bool firstPrize)
         {

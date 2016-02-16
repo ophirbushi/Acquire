@@ -11,12 +11,12 @@ namespace Acquire
         /// <summary>
         /// The X coordinate of the point.
         /// </summary>
-        public readonly int X;
+        public int X;
 
         /// <summary>
         /// The Y coordinate of the point.
         /// </summary>
-        public readonly int Y;
+        public int Y;
 
         /// <summary>
         /// The list of the point's neighboring points (Also includes points that are beyond the board's borders).

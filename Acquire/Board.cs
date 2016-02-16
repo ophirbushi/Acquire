@@ -26,7 +26,7 @@ namespace Acquire
         /// The tiles of the board.
         /// </summary>
         [XmlIgnore]
-        public static readonly Tile[,] Tiles = new Tile[WIDTH, HEIGHT];
+        public static Tile[,] Tiles = new Tile[WIDTH, HEIGHT];
 
         /// <summary>
         /// For xml serialization.
@@ -44,6 +44,8 @@ namespace Acquire
         /// </summary>
         public static Dictionary<BoardPoint, TileGroup> PointGroupDictionary = new Dictionary<BoardPoint, TileGroup>();
 
+        public static Dictionary<BoardPoint, Tile> PointTileDictionary = new Dictionary<BoardPoint, Tile>();
+
         /// <summary>
         /// Generates the board's tiles according to its width and height.
         /// </summary>
@@ -56,8 +58,29 @@ namespace Acquire
                 {
                     tile = new Tile(x, y);
                     Tiles[x, y] = tile;
-
                     TileList.Add(tile);
+                    PointTileDictionary[tile.Point] = tile;
+                }
+            }
+        }
+
+        public static void Load(List<Tile> tileList, List<TileGroup> tileGroups)
+        {
+            TileList = new List<Tile>(tileList);
+            Tiles = new Tile[WIDTH, HEIGHT];
+            TileGroups = new List<TileGroup>(tileGroups);
+            PointTileDictionary = new Dictionary<BoardPoint, Tile>();
+            PointGroupDictionary = new Dictionary<BoardPoint, TileGroup>();
+            foreach (var tile in tileList)
+            {
+                Tiles[tile.X, tile.Y] = tile;
+                PointTileDictionary[tile.Point] = tile;
+            }
+            foreach (var group in tileGroups)
+            {
+                foreach(var tile in group.Tiles)
+                {
+                    PointGroupDictionary[tile.Point] = group;
                 }
             }
         }

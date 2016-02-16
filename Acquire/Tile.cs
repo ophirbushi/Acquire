@@ -28,10 +28,12 @@ namespace Acquire
             {
                 _occupied = value;
                 if (value == false)
-                    Hotel = Hotel.Neutral;
+                {
+                    Hotel = HotelsManager.HotelNameHotelDictionary[Hotel.HOTEL_NAME_NEUTRAL];
+                }
             }
         }
-        private Hotel _hotel = Hotel.Neutral;
+        private Hotel _hotel = HotelsManager.HotelNameHotelDictionary[Hotel.HOTEL_NAME_NEUTRAL];
         public Hotel Hotel
         {
             get { return _hotel; }
