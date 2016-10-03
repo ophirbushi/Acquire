@@ -4,3 +4,4 @@ export class Hotel {
     name: string;
     prestige: HotelPrestige;
 }
+ 
