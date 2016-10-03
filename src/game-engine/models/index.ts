@@ -1,2 +1,3 @@
-export * from './turn-phase.model';
-export * from './game-state.model';
+export * from './turn-outcome';
+export * from './turn-phases';
+export * from './game-state';
