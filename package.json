@@ -1,0 +1,25 @@
+{
+  "name": "acquire",
+  "version": "1.0.0",
+  "description": "acquire game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ophirbushi/Acquire.git"
+  },
+  "keywords": [
+    "acquire"
+  ],
+  "author": "Ophir Bushinsky",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ophirbushi/Acquire/issues"
+  },
+  "homepage": "https://github.com/ophirbushi/Acquire#readme",
+  "dependencies": {
+    "typescript": "^2.0.3"
+  }
+}
