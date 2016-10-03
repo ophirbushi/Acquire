@@ -1,5 +1,5 @@
 import { Coordinates } from '../board';
 
-export class TileCard {
+export class CoordinatesCard {
     coordinates: Coordinates;
 }
