@@ -4,11 +4,11 @@ import { CoordinatesCard } from 'models';
 import { GameState } from '../game-state';
 import { TurnOutcome } from '../turn-outcome';
 import { TurnPhase } from './turn-phase.model';
-import { TurnPhaseMachine } from './turn-phase-machine.model';
+import { TurnPhaseContext } from './turn-phase-context.interface';
 
 export class ChooseCoordinateCardPhase extends TurnPhase<CoordinatesCard> {
-    constructor(turnPhaseMachine: TurnPhaseMachine, gameState: GameState, turnOutcome: TurnOutcome) {
-        super(turnPhaseMachine, gameState, turnOutcome);
+    constructor(turnPhaseContext: TurnPhaseContext, gameState: GameState, turnOutcome: TurnOutcome) {
+        super(turnPhaseContext, gameState, turnOutcome);
     }
 
     getInput() {
