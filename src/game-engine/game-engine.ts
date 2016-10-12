@@ -27,6 +27,5 @@ export class GameEngine implements TurnPhaseContext {
     private initGameState(players: Player[]) {
         let bank = new Bank();
         let board = new Board();
-        this.gameState = new GameState(bank, players, players[ 0 ], board);
     }
 }
