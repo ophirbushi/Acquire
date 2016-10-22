@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "typings install",
-    "typescript-watch": "tsc -w",
     "webpack": "webpack",
-    "build": "tsc && webpack"
+    "webpack-watch": "webpack --watch",
+    "run": "node dist/bundle.js"
   },
   "repository": {
     "type": "git",
