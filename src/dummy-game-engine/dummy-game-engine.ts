@@ -26,6 +26,7 @@ export class DummyGameEngine implements StateContext {
     private onInputReceived(input: string) {
         this.currentState.handleInput(input);
     }
+    
     private onError(error) {
         if (error) {
             console.error(error);
