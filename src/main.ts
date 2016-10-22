@@ -1,7 +1,5 @@
-import {GameEngine} from './game-engine';
+import { DummyGameEngine } from './dummy-game-engine';
 
-var engine = new GameEngine();
+var engine = new DummyGameEngine();
 
-console.log(engine);
-
-engine.run([]);
+engine.run();

@@ -4,9 +4,7 @@
         "experimentalDecorators": true,
         "module": "commonjs",
         "moduleResolution": "node",
-        "baseUrl": "./src",
-        "rootDir": "./src",
-        "outDir": "build"
+        "baseUrl": "./src"
     },
     "exclude": [
         "node_modules"
