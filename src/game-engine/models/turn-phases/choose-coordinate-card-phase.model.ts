@@ -11,11 +11,7 @@ export class ChooseCoordinateCardPhase extends TurnPhase<CoordinatesCard> {
         super(turnPhaseContext, gameState, turnOutcome);
     }
 
-    getInput() {
-        return Observable.empty<CoordinatesCard>();
-    }
-
     handleInput(input: CoordinatesCard) {
-        let coordinatesCardIndex = this.gameState.currentPlayer.coordinatesCards.findIndex(coordinatesCard => equal(coordinatesCard, input));
+      //  let coordinatesCardIndex = this.gameState.currentPlayer.coordinatesCards.findIndex(coordinatesCard => equal(coordinatesCard, input));
     }
 }
