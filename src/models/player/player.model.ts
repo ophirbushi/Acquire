@@ -1,7 +1,8 @@
 import { CoordinatesCard, StockCard } from '../cards';
-import { PlayerLike } from '../interfaces';
+import { Referenceable, PlayerLike } from '../interfaces';
 
-export class Player implements PlayerLike {
+export class Player implements Referenceable, PlayerLike {
+    id: string;
     name: string;
     cash: number;
     coordinatesCards: CoordinatesCard[] = [];
