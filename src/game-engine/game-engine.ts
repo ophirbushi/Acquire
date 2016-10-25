@@ -1,6 +1,8 @@
 import { Subscription } from 'rxjs';
 import { Player, Bank, Board } from 'models';
-import { TurnPhase, TurnPhaseContext, GameState, TurnOutcome, InputSource } from './models';
+import { InputSource } from './input-source';
+import { TurnPhase, TurnPhaseContext } from './turn-phase';
+import { GameState, TurnOutcome } from './models';
 
 export class GameEngine implements TurnPhaseContext {
     gameState: GameState;
@@ -14,7 +16,7 @@ export class GameEngine implements TurnPhaseContext {
         this.initGameState(players);
     }
 
-    setPhase(turnPhase: TurnPhase<any>) {
+    setPhase(turnPhase: TurnPhase) {
         if (this.getInputListener !== undefined && this.getInputListener !== null && !this.getInputListener.closed) {
             this.getInputListener.unsubscribe();
         }
