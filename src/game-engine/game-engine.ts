@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Player, Bank, Board } from 'models';
+import { Player, Bank, Board } from 'core';
 import { InputSource } from './input-source';
 import { TurnPhase, TurnPhaseContext } from './turn-phase';
 import { GameState, TurnOutcome } from './models';

@@ -1,4 +1,4 @@
-import { Hotel, CoordinatesCard, Player } from 'models';
+import { Hotel, CoordinatesCard, Player } from 'core';
 
 export class TurnOutcome {
     playedCoordinatesCard: CoordinatesCard;

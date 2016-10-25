@@ -1,4 +1,4 @@
-import { Player, Bank, Board } from 'models';
+import { Player, Bank, Board } from 'core';
 import { TurnPhase } from '../../turn-phase';
 import { TurnOutcome } from '../turn-outcome';
 
