@@ -1,6 +1,6 @@
 import { Player, Bank, Board } from 'models';
+import { TurnPhase } from '../../turn-phase';
 import { TurnOutcome } from '../turn-outcome';
-import { TurnPhase } from '../turn-phases';
 
 export class GameState {
     constructor(
@@ -8,7 +8,7 @@ export class GameState {
         public players: Player[],
         public currentPlayer: Player,
         public board: Board,
-        public turnPhase: TurnPhase<any>,
+        public turnPhase: TurnPhase,
         public turnOutcome: TurnOutcome
     ) { }
 }
