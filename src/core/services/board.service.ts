@@ -1,4 +1,4 @@
-import { Board, Coordinates, TileChain } from '../models';
+import { Board, Coordinates, TileChain, CoordinatesCardEffect } from '../models';
 
 export class BoardService {
     constructor(private board: Board) { }
@@ -38,11 +38,36 @@ export class BoardService {
 
         neighboringCoordinatesList.forEach(neighboringCoordinates => {
             let tileChain = this.getTileChain(neighboringCoordinates);
+            
             if (tileChain !== undefined && !neighboringTileChains.some(alreadyInListTileChain => tileChain.id === alreadyInListTileChain.id)) {
                 neighboringTileChains.push(tileChain);
             }
         });
 
         return neighboringTileChains;
+    }
+
+    getCoordinatesCardEffect(coordinates: Coordinates): CoordinatesCardEffect {
+        let neighboringTileChains = this.getNeighboringTileChains(coordinates);
+
+        // no neighboring chains
+        if (neighboringTileChains.length === 0) {
+            return CoordinatesCardEffect.None;
+        }
+        // all neighboring chains do not have hotelId
+        else if (neighboringTileChains.every(neighboringTileChain => neighboringTileChain.hotelId === undefined)) {
+            return CoordinatesCardEffect.SetUp;
+        }
+        // not all neighboring chains have the same hotelId
+        else if (neighboringTileChains.some(neighboringTileChain => neighboringTileChains[ 0 ].hotelId !== neighboringTileChain.hotelId)) {
+            return CoordinatesCardEffect.Merge;
+        }
+        // only 1 neighboring chain with hotelId
+        else if (neighboringTileChains.length === 1 && neighboringTileChains[ 0 ].hotelId !== undefined) {
+            return CoordinatesCardEffect.Enlarge;
+        }
+
+        // should not have reached here
+        throw new Error('error at getCoordinatesCardEffect method');
     }
 }

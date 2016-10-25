@@ -1,1 +1,1 @@
-export * from './coordinates-card-effect-calculator.service';
+export * from './board.service';
