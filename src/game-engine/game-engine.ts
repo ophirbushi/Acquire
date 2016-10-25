@@ -1,19 +1,21 @@
 import { Subscription } from 'rxjs';
-import { Player, Bank, Board } from 'core';
+import { Player, Bank, Board, BoardService } from 'core';
 import { InputSource } from './input-source';
-import { TurnPhase, TurnPhaseContext } from './turn-phase';
+import { TurnPhase, TurnPhaseContext, ChooseCoordinateCardPhase } from './turn-phase';
 import { GameState, TurnOutcome } from './models';
 
 export class GameEngine implements TurnPhaseContext {
     gameState: GameState;
-    turnOutcome: TurnOutcome;
 
+    private boardService: BoardService;
     private getInputListener: Subscription;
 
     constructor(private inputSource: InputSource) { }
 
     run(players: Player[]) {
         this.initGameState(players);
+        this.initServices();
+        this.setPhase(new ChooseCoordinateCardPhase(this.boardService, this))
     }
 
     setPhase(turnPhase: TurnPhase) {
@@ -29,8 +31,10 @@ export class GameEngine implements TurnPhaseContext {
     }
 
     private initGameState(players: Player[]) {
-        let bank = new Bank();
-        let board = new Board();
-        let gameState = new GameState(bank, players, players[ 0 ], board);
+        this.gameState = new GameState(new Bank(), players, players[ 0 ], new Board(), new TurnOutcome());
+    }
+
+    private initServices() {
+        this.boardService = new BoardService(this.gameState.board);
     }
 }

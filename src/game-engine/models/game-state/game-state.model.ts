@@ -8,7 +8,7 @@ export class GameState {
         public players: Player[],
         public currentPlayer: Player,
         public board: Board,
-        public turnPhase: TurnPhase,
-        public turnOutcome: TurnOutcome
+        public turnOutcome: TurnOutcome,
+        public turnPhase?: TurnPhase
     ) { }
 }

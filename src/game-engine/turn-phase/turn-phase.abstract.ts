@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
-import { GameState, TurnOutcome } from '../models';
+import { GameState } from '../models';
 import { TurnPhaseContext } from './turn-phase-context.interface';
 
 export abstract class TurnPhase {
-    constructor(protected turnPhaseContext: TurnPhaseContext, protected gameState: GameState, protected turnOutcome: TurnOutcome) { }
+    constructor(protected turnPhaseContext: TurnPhaseContext) { }
 
     abstract handleInput(input: any): void;
 }
