@@ -1,4 +1,3 @@
-import { Subscription } from 'rxjs';
 import { Player, Bank, Board, BoardService } from 'core';
 import { InputSource } from './input-source';
 import { TurnPhase, TurnPhaseContext, ChooseCoordinateCardPhase } from './turn-phase';
@@ -8,33 +7,47 @@ export class GameEngine implements TurnPhaseContext {
     gameState: GameState;
 
     private boardService: BoardService;
-    private getInputListener: Subscription;
+    private turnPhase: TurnPhase;
 
     constructor(private inputSource: InputSource) { }
 
-    run(players: Player[]) {
-        this.initGameState(players);
+    newGame(players: Player[]): void {
+        let gameState = this.getNewGameState(players);
+        this.run(gameState);
+    }
+
+    load(gameState: GameState): void {
+        this.run(gameState);
+    }
+
+    setPhase(turnPhase: TurnPhase): void {
+        this.turnPhase = turnPhase;
+
+        const turnPhaseDidNotChange = () => turnPhase === this.turnPhase;
+        
+        this.inputSource.getInput(turnPhase)
+            .takeWhile(turnPhaseDidNotChange)
+            .subscribe((input) => turnPhase.handleInput(input), (error) => {  /** todo: handle error */ });
+    }
+
+    private run(gameState: GameState): void {
+        this.gameState = gameState;
         this.initServices();
-        this.setPhase(new ChooseCoordinateCardPhase(this.boardService, this))
+        this.setPhase(gameState.turnPhase);
     }
 
-    setPhase(turnPhase: TurnPhase) {
-        if (this.getInputListener !== undefined && this.getInputListener !== null && !this.getInputListener.closed) {
-            this.getInputListener.unsubscribe();
-        }
-
-        this.getInputListener = this.inputSource.getInput(turnPhase)
-            .subscribe(
-            input => turnPhase.handleInput(input),
-            error => {  /** todo: handle error */ }
-            );
-    }
-
-    private initGameState(players: Player[]) {
-        this.gameState = new GameState(new Bank(), players, players[ 0 ], new Board(), new TurnOutcome());
-    }
-
-    private initServices() {
+    private initServices(): void {
         this.boardService = new BoardService(this.gameState.board);
+    }
+
+    private getNewGameState(players: Player[]): GameState {
+        return new GameState(
+            new Bank(),
+            players,
+            players[0],
+            new Board(),
+            new TurnOutcome(),
+            new ChooseCoordinateCardPhase(this, this.boardService)
+        );
     }
 }
