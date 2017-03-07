@@ -6,4 +6,3 @@ export class Hotel implements Referenceable {
     name: string;
     prestige: HotelPrestige;
 }
- 

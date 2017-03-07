@@ -1,12 +1,13 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "experimentalDecorators": true,
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "baseUrl": "./src"
-    },
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "target": "es5",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "baseUrl": "./src"
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }

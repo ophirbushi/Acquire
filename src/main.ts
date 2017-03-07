@@ -1,5 +1,13 @@
-import { GameEngine } from './game-engine';
+import { Observable } from 'rxjs';
 
-var engine = new GameEngine();
+import { GameEngine, InputSource, TurnPhase } from './game-engine';
 
-engine.run([]);
+class MockInputSource implements InputSource {
+  getInput(TurnPhase: TurnPhase): Observable<any> {
+    return Observable.of('mock input');
+  };
+}
+debugger;
+var engine = new GameEngine(new MockInputSource());
+
+engine.newGame([]);

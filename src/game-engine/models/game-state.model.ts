@@ -1,12 +1,12 @@
-import { Player, Bank, Board } from 'core';
-import { TurnPhase } from '../../turn-phase';
-import { TurnOutcome } from '../turn-outcome';
+import { Bank, Board, Player } from 'core';
+import { TurnPhase } from '../turn-phase';
+import { TurnOutcome } from './turn-outcome.model';
 
 export class GameState {
     constructor(
-        public bank: Bank,
         public players: Player[],
-        public currentPlayer: Player,
+        public bank: Bank,
+        public currentPlayerIndex: number,
         public board: Board,
         public turnOutcome: TurnOutcome,
         public turnPhase: TurnPhase,
