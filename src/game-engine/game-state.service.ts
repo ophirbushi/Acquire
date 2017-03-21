@@ -5,7 +5,15 @@ export class GameStateService {
         return JSON.parse(JSON.stringify(this.gameState));
     }
 
-    constructor(private gameState: GameState) { }
+    constructor(private gameState?: GameState) {
+        if (gameState == null) {
+            this.initGameState();
+        }
+    }
+
+    private initGameState(): void {
+        this.gameState = new GameState();
+    }
 
     updateGameState(action: (gameState: GameState) => void): void {
         action(this.gameState);

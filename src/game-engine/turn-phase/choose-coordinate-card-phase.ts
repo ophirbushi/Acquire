@@ -8,8 +8,6 @@ import { TurnPhaseContext } from './turn-phase-context.interface';
 import { GameStateService } from '../game-state.service';
 
 export class ChooseCoordinateCardPhase implements TurnPhase {
-    constructor(private provider: Provider, private boardService: BoardService, private gameStateService: GameStateService) { }
-
     handleInput(turnPhaseContext: TurnPhaseContext, coordinatesCard: CoordinatesCard) {
         this.gameStateService.updateGameState((gameState) => {
             gameState.bank.cash += 2;

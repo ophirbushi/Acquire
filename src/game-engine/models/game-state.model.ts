@@ -1,5 +1,5 @@
 import { Bank, Board, Player } from 'core';
-import { TurnPhase } from '../turn-phase';
+import { TurnPhaseId } from '../turn-phase';
 import { TurnOutcome } from './turn-outcome.model';
 
 export class GameState {
@@ -9,7 +9,7 @@ export class GameState {
         public currentPlayerIndex: number,
         public board: Board,
         public turnOutcome: TurnOutcome,
-        public turnPhase: TurnPhase,
+        public turnPhaseId: TurnPhaseId,
         public turnNumber: number = 1
     ) { }
 }
