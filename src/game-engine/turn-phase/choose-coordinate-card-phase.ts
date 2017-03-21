@@ -1,21 +1,21 @@
 import * as equal from 'deep-equal';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { CoordinatesCard, BoardService } from 'core';
 import { GameState, TurnOutcome } from '../models';
-import { Provider } from '../provider.interface';
 import { TurnPhase } from './turn-phase.interface';
 import { TurnPhaseContext } from './turn-phase-context.interface';
 import { GameStateService } from '../game-state.service';
 
 export class ChooseCoordinateCardPhase implements TurnPhase {
-    handleInput(turnPhaseContext: TurnPhaseContext, coordinatesCard: CoordinatesCard) {
-        this.gameStateService.updateGameState((gameState) => {
-            gameState.bank.cash += 2;
-        });
-        const snapshot = this.gameStateService.gameStateSnapshot;
-        const coordinatesCardEffect = this.boardService.getCoordinatesCardEffect(snapshot.board, coordinatesCard.coordinates);
-        turnPhaseContext.setPhase(this.provider.provide(ChooseCoordinateCardPhase));
+    handleInput(turnPhaseContext: TurnPhaseContext, chosenCardIndex: number,
+        boardService: BoardService, gameStateService: GameStateService): void {
+        const snapshot = gameStateService.gameStateSnapshot;
+        const currentPlayer = snapshot.players[snapshot.currentPlayerIndex];
+        const chosenCard = currentPlayer.coordinatesCards[chosenCardIndex];
+        const coordinatesCardEffect = boardService.getCoordinatesCardEffect(snapshot.board, chosenCard.coordinates);
 
-        //  let coordinatesCardIndex = this.gameState.currentPlayer.coordinatesCards.findIndex(coordinatesCard => equal(coordinatesCard, input));
+        
+
+        turnPhaseContext.setPhase('choose-coordinate-card');
     }
 }

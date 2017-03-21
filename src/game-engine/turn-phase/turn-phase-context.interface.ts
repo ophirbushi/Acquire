@@ -1,5 +1,5 @@
-import { TurnPhase } from './turn-phase.interface';
+import { TurnPhaseId } from './turn-phase-id';
 
 export interface TurnPhaseContext {
-    setPhase(turnPhase: TurnPhase);
+    setPhase(turnPhase: TurnPhaseId): void;
 }

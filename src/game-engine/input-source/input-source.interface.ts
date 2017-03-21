@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
-import { TurnPhase } from '../turn-phase';
+import { TurnPhaseId } from '../turn-phase';
 
 export interface InputSource {
-    getInput(TurnPhase: TurnPhase): Observable<any>;
+    getInput(TurnPhase: TurnPhaseId): Observable<any>;
 }

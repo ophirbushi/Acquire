@@ -1,19 +1,11 @@
 import { GameState } from './models';
 
 export class GameStateService {
-    get gameStateSnapshot(): Readonly<GameState> {
+    get gameStateSnapshot(): GameState {
         return JSON.parse(JSON.stringify(this.gameState));
     }
 
-    constructor(private gameState?: GameState) {
-        if (gameState == null) {
-            this.initGameState();
-        }
-    }
-
-    private initGameState(): void {
-        this.gameState = new GameState();
-    }
+    constructor(private gameState: GameState) { }
 
     updateGameState(action: (gameState: GameState) => void): void {
         action(this.gameState);

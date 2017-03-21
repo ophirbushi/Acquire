@@ -1,43 +1,41 @@
-import { Player, Board, Bank, BoardService } from 'core';
-import { GameState, TurnOutcome } from './models';
-import { Toolbox } from './toolbox';
+import { BoardService } from 'core';
+import { GameState } from './models';
 import { InputSource } from './input-source';
-import { TurnPhase, TurnPhaseContext, ChooseCoordinateCardPhase } from './turn-phase';
+import { TurnPhase, TurnPhaseId, TurnPhaseContext, ChooseCoordinateCardPhase } from './turn-phase';
 import { GameStateService } from './game-state.service';
+import { Type } from './type.interface';
 
 export class GameEngine implements TurnPhaseContext {
-    private boardService: BoardService;
-    private gameStateService: GameStateService;
+    private readonly turnPhaseDictionary: { [id: string]: Type<TurnPhase> } = {
+        [<TurnPhaseId>'choose-coordinate-card']: ChooseCoordinateCardPhase
+    };
 
-    constructor(private inputSource: InputSource) { }
+    constructor(
+        private inputSource: InputSource,
+        private gameStateService: GameStateService,
+        private boardService: BoardService
+    ) { }
 
-    newGame(players: Player[]): void {
-        const gameState = new GameState(players, new Bank(), 0, new Board(), new TurnOutcome(), new ChooseCoordinateCardPhase(), )
+    run(): void {
+        const gameStateSnapShot = this.gameStateService.gameStateSnapshot;
+        this.setPhase(gameStateSnapShot.turnPhaseId);
     }
 
-    load(gameState: GameState): void {
-        this.run(gameState);
-    }
+    setPhase = (turnPhaseId: TurnPhaseId): void => {
+        const turnPhase = this.getTurnPhase(turnPhaseId);
 
-    initServices(gameState?: GameState): void {
-        this.boardService = new BoardService();
-        this.gameStateService = new GameStateService(gameState);
-    }
-
-    run(gameState: GameState): void {
-
-        const turnPhase = new ChooseCoordinateCardPhase();
-        this.setPhase(turnPhase);
-    }
-
-    setPhase = (turnPhase: TurnPhase): void => {
-        const handleInput = (input: any): void => turnPhase.handleInput(this, input, {});
+        const handleInput = (input: any): void => turnPhase.handleInput(this, input, this.boardService, this.gameStateService);
         const handleError = (error: any): void => { };
 
         this.inputSource
-            .getInput(turnPhase)
+            .getInput(turnPhaseId)
             .take(1)
             .subscribe(handleInput, handleError);
+    }
+
+    private getTurnPhase(turnPhaseId: TurnPhaseId): TurnPhase {
+        const turnPhaseType: Type<TurnPhase> = this.turnPhaseDictionary[turnPhaseId];
+        return new turnPhaseType();
     }
 }
 
