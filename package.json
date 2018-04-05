@@ -2,12 +2,11 @@
   "name": "acquire",
   "version": "1.0.0",
   "description": "acquire game",
-  "main": "index.js",
+  "main": "dist/main.js",
   "scripts": {
-    "postinstall": "typings install",
-    "build": "webpack",
-    "watch": "webpack --watch",
-    "start": "node dist/bundle.js"
+    "build": "tsc",
+    "watch": "tsc -w",
+    "start": "node dist/main.js"
   },
   "repository": {
     "type": "git",
@@ -23,11 +22,11 @@
   },
   "homepage": "https://github.com/ophirbushi/Acquire#readme",
   "dependencies": {
-    "awesome-typescript-loader": "^2.2.4",
     "deep-equal": "^1.0.1",
     "roxanne": "^0.1.5",
-    "rxjs": "^5.5.8",
-    "typescript": "2.1.1",
-    "webpack": "^2.2.1"
+    "rxjs": "^5.5.8"
+  },
+  "devDependencies": {
+    "typescript": "^2.7.1"
   }
 }
