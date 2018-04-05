@@ -1,8 +1,4 @@
-import { Referenceable } from '../interfaces';
-import { HotelPrestige } from './hotel-prestige.enum';
-
-export interface Hotel extends Referenceable {
-    id: string;
+export interface Hotel {
     name: string;
-    prestige: HotelPrestige;
+    prestige: 'cheap' | 'regular' | 'expensive';
 }

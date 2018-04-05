@@ -2,7 +2,8 @@ import { Reducer } from 'roxanne';
 
 import { Acquire, GiveCoordinatesCardsToPlayerPayload } from './interfaces';
 import { AcquireActions } from './actions';
-import { Bank, Player } from 'core';
+import { Player } from 'core';
+import { generateCoordinatesCards, generateStocks } from './utils';
 
 export const acquireReducer = new Reducer<Acquire, AcquireActions>(
     function (state, action, payload) {
@@ -32,24 +33,45 @@ function endTurn(state: Acquire): Acquire {
 }
 
 function giveCoordinatesCardsToPlayer(state: Acquire, payload: GiveCoordinatesCardsToPlayerPayload): Acquire {
-    const { players, bank } = state;
+    const { players, coordinatesCards } = state;
     const { count, playerIndex } = payload;
 
     const player = players[playerIndex];
 
-    const cardsToGiveToPlayer = bank.coordinatesCards.splice(0, count);
+    const cardsToGiveToPlayer = coordinatesCards.splice(0, count);
     player.coordinatesCards.concat(cardsToGiveToPlayer);
 
     return state;
 }
 
 function init(state: Acquire): Acquire {
-    const { playersCount, initialCashPerPlayer, boardWidth, boardHeight } = state.config;
+    let newState: Acquire = { ...state };
 
+    newState = initCoordinatesCards(newState);
+    newState = initStocks(newState);
+    newState = initPlayers(newState);
+
+    return newState;
+}
+
+function initCoordinatesCards(state: Acquire): Acquire {
+    const coordinatesCards = generateCoordinatesCards(state.config);
+    return { ...state, coordinatesCards };
+}
+
+function initStocks(state: Acquire): Acquire {
+    const stocks = generateStocks(state.config);
+    return { ...state, stocks };
+}
+
+function initPlayers(state: Acquire): Acquire {
+    const { playersCount, initialCashPerPlayer } = state.config;
 
     const players: Player[] = [];
+
     for (let i = 0; i < playersCount; i++) {
         players.push({ cash: initialCashPerPlayer, coordinatesCards: [], stockCards: [] });
     }
+
     return { ...state, players };
 }

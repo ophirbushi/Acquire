@@ -1,6 +1,6 @@
-import { CoordinatesCard, StockCard } from '../cards';
+import { CoordinatesCard, Stocks } from '../cards';
 
 export interface PlayerLike {
     coordinatesCards: CoordinatesCard[];
-    stockCards: StockCard[];
+    stockCards: Stocks[];
 }

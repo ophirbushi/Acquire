@@ -1,4 +1,4 @@
-import { Player, Board, CoordinatesCard, StockCard } from '../../core';
+import { Player, Board, CoordinatesCard, Stocks, Hotel } from '../../core';
 
 export interface Acquire {
     config: AcquireConfig;
@@ -9,8 +9,7 @@ export interface Acquire {
     turnNumber: number;
     coordinatesCards: CoordinatesCard[];
     discardedCoordinatesCards: CoordinatesCard[];
-    stockCards: StockCard[];
-    discardedStockCards: StockCard[];
+    stocks: Stocks;
 }
 
 export interface AcquireConfig {
@@ -18,6 +17,8 @@ export interface AcquireConfig {
     initialCashPerPlayer: number;
     boardWidth: number;
     boardHeight: number;
+    stocksPerHotel: number;
+    hotels: Hotel[];
 }
 
 export type PhaseName = 'init';

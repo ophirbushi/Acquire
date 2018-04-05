@@ -1,7 +1,6 @@
-import { Referenceable } from '../interfaces';
 import { Coordinates } from './coordinates.model';
 
-export class TileChain implements Referenceable {
+export class TileChain {
     id: string;
     coordinatesList: Coordinates[];
     hotelId: string;

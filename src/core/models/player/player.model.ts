@@ -1,5 +1,5 @@
-import { CoordinatesCard, StockCard } from '../cards';
-import { Referenceable, PlayerLike } from '../interfaces';
+import { CoordinatesCard, Stocks } from '../cards';
+import { PlayerLike } from '../interfaces';
 
 export interface Player extends PlayerLike {
     cash: number;
