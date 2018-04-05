@@ -52,15 +52,15 @@ export function getCoordinatesCardEffect(board: Board, coordinates: Coordinates)
         return CoordinatesCardEffect.None;
     }
     // all neighboring chains do not have hotelId
-    else if (neighboringTileChains.every(neighboringTileChain => neighboringTileChain.hotelId === undefined)) {
+    if (neighboringTileChains.every(neighboringTileChain => neighboringTileChain.hotelId === undefined)) {
         return CoordinatesCardEffect.SetUp;
     }
     // not all neighboring chains have the same hotelId
-    else if (neighboringTileChains.some(neighboringTileChain => neighboringTileChains[0].hotelId !== neighboringTileChain.hotelId)) {
+    if (neighboringTileChains.some(neighboringTileChain => neighboringTileChains[0].hotelId !== neighboringTileChain.hotelId)) {
         return CoordinatesCardEffect.Merge;
     }
     // only 1 neighboring chain with hotelId
-    else if (neighboringTileChains.length === 1 && neighboringTileChains[0].hotelId !== undefined) {
+    if (neighboringTileChains.length === 1 && neighboringTileChains[0].hotelId !== undefined) {
         return CoordinatesCardEffect.Enlarge;
     }
 

@@ -1,10 +1,14 @@
 import { Acquire } from './interfaces';
 
 export const acquireInitialState: Acquire = {
-    bank: null,
+    config: null,
     board: null,
     currentPlayerIndex: null,
-    phaseName: null,
+    phaseName: 'init',
     players: null,
-    turnNumber: null
+    turnNumber: null,
+    coordinatesCards: null,
+    discardedCoordinatesCards: null,
+    stockCards: null,
+    discardedStockCards: null
 };

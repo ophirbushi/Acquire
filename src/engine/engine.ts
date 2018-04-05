@@ -1,34 +1,31 @@
 import { generateStore, Acquire, PhaseName } from './store';
 import { InputProvider } from './input-provider';
 import { Phase, initPhase } from './phases';
+import { StateService } from './state.service';
 
 type PhasePair = [PhaseName, Phase];
 
 export class AcquireEngine {
-    private readonly store = generateStore();
+    private readonly stateService = new StateService();
     private readonly phases: { [name: string]: Phase } = {};
-    private get state(): Acquire { return this.store.value; }
+    private get snapshot(): Acquire { return this.stateService.snapshot; }
 
     constructor(private readonly inputProvider: InputProvider) {
         this.registerPhases();
     }
 
     go() {
-        this.setPhase(this.state.phaseName);
+        this.setPhase(this.snapshot.phaseName);
     }
 
-    private setPhase(name: PhaseName) {
-        this.store.dispatch('setPhaseName', name);
-        const phase = this.phases[name];
-        phase(this.store, this.inputProvider, this.onPhaseDone.bind(this));
-    }
-
-    private endTurn() {
-        this.store.dispatch('endTurn', null);
+    private setPhase(phaseName: PhaseName) {
+        this.stateService.setPhaseName(phaseName);
+        const phase = this.phases[phaseName];
+        phase(this.stateService, this.inputProvider, this.onPhaseDone.bind(this));
     }
 
     private onPhaseDone() {
-        const { phaseName } = this.state;
+        const { phaseName } = this.snapshot;
 
         switch (phaseName) {
             case 'init':
