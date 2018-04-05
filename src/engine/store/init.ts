@@ -4,7 +4,7 @@ export const acquireInitialState: Acquire = {
     bank: null,
     board: null,
     currentPlayerIndex: null,
-    phase: null,
+    phaseName: null,
     players: null,
     turnNumber: null
 };

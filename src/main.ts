@@ -1,13 +1,13 @@
-import { Observable } from 'rxjs';
+import { of as _of } from 'rxjs/observable/of';
 
-import { GameEngine, InputSource, TurnPhase } from './game-engine';
+import { InputProvider, AcquireEngine } from './engine';
 
-class MockInputSource implements InputSource {
-  getInput(TurnPhase: TurnPhase): Observable<any> {
-    return Observable.of('mock input');
+class MockInputSource implements InputProvider {
+  getInput = function <T>() {
+    return _of<T>(<any>'mock input').toPromise();
   };
 }
-debugger;
-var engine = new GameEngine(new MockInputSource());
 
-engine.newGame([]);
+var engine = new AcquireEngine(new MockInputSource());
+
+engine.go();

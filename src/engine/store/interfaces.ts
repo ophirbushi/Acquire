@@ -1,10 +1,12 @@
-import { Player, Bank, Board } from '../core';
+import { Player, Bank, Board } from '../../core';
 
 export interface Acquire {
     players: Player[];
     bank: Bank;
     currentPlayerIndex: number;
     board: Board;
-    phase: string;
+    phaseName: PhaseName;
     turnNumber: number;
 }
+
+export type PhaseName = 'init';
