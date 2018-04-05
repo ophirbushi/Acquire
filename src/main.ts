@@ -8,6 +8,6 @@ class MockInputSource implements InputProvider {
   };
 }
 
-var engine = new AcquireEngine(new MockInputSource());
+const engine = new AcquireEngine(new MockInputSource());
 
 engine.go();

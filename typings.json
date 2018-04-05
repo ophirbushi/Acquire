@@ -1,7 +1,0 @@
-{
-  "globalDependencies": {
-    "core-js": "registry:dt/core-js#0.0.0+20160914114559",
-    "deep-equal": "registry:dt/deep-equal#0.0.0+20160316155526",
-    "node": "registry:dt/node#6.0.0+20160928143418"
-  }
-}

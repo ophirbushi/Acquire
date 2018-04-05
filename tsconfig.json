@@ -2,10 +2,13 @@
   "compilerOptions": {
     "target": "es5",
     "sourceMap": true,
-    "experimentalDecorators": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "outDir": "dist",
+    "lib": [
+      "es2015"
+    ]
   },
   "exclude": [
     "node_modules"
