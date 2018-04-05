@@ -1,7 +1,7 @@
 import { TileChain } from './tile-chain.model';
 
-export class Board {
+export interface Board {
     width: number;
     height: number;
-    tileChains: TileChain[] = [];
+    tileChains: TileChain[];
 }

@@ -1,5 +1,5 @@
 import { Coordinates } from '../board';
 
-export class CoordinatesCard {
+export interface CoordinatesCard {
     coordinates: Coordinates;
 }

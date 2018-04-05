@@ -1,3 +1,3 @@
-export class StockCard {
+export interface StockCard {
     hotelId: string;
 }
