@@ -1,3 +1,4 @@
+import { Coordinates } from 'core';
 import { PhaseName, AcquireConfig, GiveCoordinatesCardsToPlayerPayload, ChooseCoordinatesCardPayload } from './interfaces';
 
 export interface AcquireActions {
@@ -6,6 +7,7 @@ export interface AcquireActions {
     init: null;
     giveCoordinatesCardsToPlayer: GiveCoordinatesCardsToPlayerPayload;
     chooseCoordinatesCard: ChooseCoordinatesCardPayload;
+    putCoordinatesCardOnBoard: Coordinates;
     endTurn: null;
     setCurrentPlayerIndex: number;
 }

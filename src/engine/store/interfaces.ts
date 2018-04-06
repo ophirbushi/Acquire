@@ -19,10 +19,11 @@ export interface AcquireConfig {
     boardWidth: number;
     boardHeight: number;
     stocksPerHotel: number;
+    unmergeableHotelSize: number;
     hotels: Hotel[];
 }
 
-export type PhaseName = 'init' | 'determineStarter' | 'chooseCard';
+export type PhaseName = 'init' | 'determineStarter' | 'chooseCard' | 'replaceCard' | 'putCardOnBoard';
 
 export interface GiveCoordinatesCardsToPlayerPayload {
     count: number;

@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { Store } from 'roxanne';
 
 import { Acquire, AcquireActions, generateStore, AcquireConfig, PhaseName, GiveCoordinatesCardsToPlayerPayload, ChooseCoordinatesCardPayload } from './store';
+import { Coordinates } from 'core';
 
 export class StateService {
 
@@ -37,7 +38,11 @@ export class StateService {
         this.store.dispatch('setCurrentPlayerIndex', index);
     }
 
-    putCoordinatesCardOnBoard(payload: ChooseCoordinatesCardPayload) {
-        this.store.dispatch('putCoordinatesCardOnBoard', payload);
+    chooseCoordinatesCard(payload: ChooseCoordinatesCardPayload) {
+        this.store.dispatch('chooseCoordinatesCard', payload);
+    }
+
+    putCoordinatesCardOnBoard(coordinates: Coordinates) {
+        this.store.dispatch('putCoordinatesCardOnBoard', coordinates);
     }
 }

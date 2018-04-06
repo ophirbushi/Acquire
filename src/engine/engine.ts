@@ -1,6 +1,7 @@
+import { getCoordinatesCardEffect, isReplaceable } from '../core';
 import { generateStore, Acquire, PhaseName } from './store';
 import { InputProvider } from './input-provider';
-import { Phase, initPhase, determineStarterPhase, chooseCardPhase } from './phases';
+import { Phase, initPhase, determineStarterPhase, chooseCardPhase, replaceCardPhase, putCardOnBoardPhase } from './phases';
 import { StateService } from './state.service';
 
 type PhasePair = [PhaseName, Phase];
@@ -34,6 +35,11 @@ export class AcquireEngine {
             case 'determineStarter':
                 this.setPhase('chooseCard');
                 break;
+            case 'chooseCard':
+                this.onChooseCardDone();
+                break;
+            case 'putCardOnBoard':
+                break;
             default:
                 throw new Error(`[GameEngine] unknown phaseName: ${phaseName}`);
         }
@@ -43,8 +49,21 @@ export class AcquireEngine {
         const pairs: PhasePair[] = [
             ['init', initPhase],
             ['determineStarter', determineStarterPhase],
-            ['chooseCard', chooseCardPhase]
+            ['chooseCard', chooseCardPhase],
+            ['replaceCard', replaceCardPhase],
+            ['putCardOnBoard', putCardOnBoardPhase]
         ];
         pairs.forEach(pair => this.phases[pair[0]] = pair[1]);
+    }
+
+    private onChooseCardDone() {
+        const { board, chosenCoordinatesCard, config } = this.snapshot;
+
+        const replaceable = isReplaceable(board, chosenCoordinatesCard.coordinates, config.unmergeableHotelSize);
+        if (replaceable) {
+            this.setPhase('replaceCard');
+        } else {
+            this.setPhase('putCardOnBoard');
+        }
     }
 }

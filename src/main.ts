@@ -6,16 +6,19 @@ import { Acquire, AcquireConfig } from 'engine/store';
 class MockInputSource implements InputProvider {
   getInput = function (type: string, state: Acquire) {
     if (type === 'config') {
-      return _of(<AcquireConfig>{
+      const config: AcquireConfig = {
         boardHeight: 12,
         boardWidth: 8,
         hotels: [{ name: 'Continental', prestige: 'expensive' }],
         initialCashPerPlayer: 5000,
         playersCount: 3,
-        stocksPerHotel: 24
-      }).toPromise();
+        stocksPerHotel: 24,
+        unmergeableHotelSize: 11
+      };
+      return _of(config).toPromise(); 
+    } else if (type === 'coordinatesCard') {
+      return _of(0).toPromise();
     }
-
     return _of(<any>'mock input').toPromise();
   }
 }
