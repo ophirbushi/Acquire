@@ -6,4 +6,5 @@ export interface AcquireActions {
     init: null;
     giveCoordinatesCardsToPlayer: GiveCoordinatesCardsToPlayerPayload;
     endTurn: null;
+    setCurrentPlayerIndex: number;
 }

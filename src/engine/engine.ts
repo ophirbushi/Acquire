@@ -1,6 +1,6 @@
 import { generateStore, Acquire, PhaseName } from './store';
 import { InputProvider } from './input-provider';
-import { Phase, initPhase } from './phases';
+import { Phase, initPhase, determineStarterPhase } from './phases';
 import { StateService } from './state.service';
 
 type PhasePair = [PhaseName, Phase];
@@ -29,7 +29,12 @@ export class AcquireEngine {
 
         switch (phaseName) {
             case 'init':
+                this.setPhase('determineStarter');
                 break;
+
+            case 'determineStarter':
+                break;
+
             default:
                 throw new Error(`[GameEngine] unknown phaseName: ${phaseName}`);
         }
@@ -37,7 +42,8 @@ export class AcquireEngine {
 
     private registerPhases() {
         const pairs: PhasePair[] = [
-            ['init', initPhase]
+            ['init', initPhase],
+            ['determineStarter', determineStarterPhase],
         ];
         pairs.forEach(pair => this.phases[pair[0]] = pair[1]);
     }

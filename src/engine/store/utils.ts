@@ -1,4 +1,4 @@
-import { CoordinatesCard, Coordinates, Stocks, Stocks } from '../../core';
+import { CoordinatesCard, Coordinates, Stocks } from '../../core';
 import { AcquireConfig } from '.';
 
 export function generateCoordinatesCards(config: AcquireConfig): CoordinatesCard[] {
@@ -15,12 +15,21 @@ export function generateCoordinatesCards(config: AcquireConfig): CoordinatesCard
     return cards;
 }
 
-export function generateStocks(config: AcquireConfig): Stocks {
+export function generateStocksForBank(config: AcquireConfig): Stocks {
     const { hotels, stocksPerHotel } = config;
 
     const stocks: Stocks = {};
 
     hotels.forEach(hotel => stocks[hotel.name] = stocksPerHotel);
+    return stocks;
+}
+
+export function generateStocksForPlayer(config: AcquireConfig): Stocks {
+    const { hotels, stocksPerHotel } = config;
+
+    const stocks: Stocks = {};
+
+    hotels.forEach(hotel => stocks[hotel.name] = 0);
     return stocks;
 }
 
@@ -42,4 +51,23 @@ export function shuffle(array: any[]) {
     }
 
     return array;
+}
+
+export function closestToA1(coor: Coordinates[]): number {
+    const distanceDict: { [index: number]: number } = {};
+    
+    coor.forEach((c, i) => distanceDict[i] = distance(c, { x: 0, y: 0 }));
+
+    const sorted = Object.keys(distanceDict)
+        .map(index => ({ index, distance: distanceDict[index] }))
+        .slice()
+        .sort((a, b) => {
+            return a.distance - b.distance;
+        });
+
+    return +sorted[0].index;
+}
+
+export function distance(a: Coordinates, b: Coordinates): number {
+    return Math.sqrt((Math.pow(a.x, 2) - Math.pow(b.x, 2)) + (Math.pow(a.y, 2) - Math.pow(b.y, 2)));
 }

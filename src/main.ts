@@ -1,11 +1,23 @@
 import { of as _of } from 'rxjs/observable/of';
 
 import { InputProvider, AcquireEngine } from './engine';
+import { Acquire, AcquireConfig } from 'engine/store';
 
 class MockInputSource implements InputProvider {
-  getInput = function <T>() {
-    return _of<T>(<any>'mock input').toPromise();
-  };
+  getInput = function (type: string, state: Acquire) {
+    if (type === 'config') {
+      return _of(<AcquireConfig>{
+        boardHeight: 12,
+        boardWidth: 8,
+        hotels: [{ name: 'Continental', prestige: 'expensive' }],
+        initialCashPerPlayer: 5000,
+        playersCount: 3,
+        stocksPerHotel: 24
+      }).toPromise();
+    }
+
+    return _of(<any>'mock input').toPromise();
+  }
 }
 
 const engine = new AcquireEngine(new MockInputSource());

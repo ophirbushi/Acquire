@@ -21,7 +21,7 @@ export interface AcquireConfig {
     hotels: Hotel[];
 }
 
-export type PhaseName = 'init';
+export type PhaseName = 'init' | 'determineStarter';
 
 export interface GiveCoordinatesCardsToPlayerPayload {
     count: number;

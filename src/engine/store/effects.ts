@@ -7,6 +7,8 @@ import { shuffle } from './utils';
 export const acquireEffects = new Effects<Acquire, AcquireActions>(
     function () {
         this.ofType('init')
-            .subscribe(() => shuffle(this.store.value.coordinatesCards));
+            .subscribe(() => {
+                shuffle(this.store.value.coordinatesCards);
+            });
     }
 );

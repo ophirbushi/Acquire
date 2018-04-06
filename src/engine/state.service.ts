@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Store } from 'roxanne';
 
-import { Acquire, AcquireActions, generateStore, AcquireConfig, PhaseName } from './store';
+import { Acquire, AcquireActions, generateStore, AcquireConfig, PhaseName, GiveCoordinatesCardsToPlayerPayload } from './store';
 
 export class StateService {
 
@@ -27,5 +27,13 @@ export class StateService {
 
     endTurn() {
         this.store.dispatch('endTurn', null);
+    }
+
+    giveCoordinatesCardsToPlayer(payload: GiveCoordinatesCardsToPlayerPayload) {
+        this.store.dispatch('giveCoordinatesCardsToPlayer', payload);
+    }
+
+    setCurrentPlayerIndex(index: number) {
+        this.store.dispatch('setCurrentPlayerIndex', index);
     }
 }

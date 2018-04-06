@@ -3,7 +3,7 @@ import { Reducer } from 'roxanne';
 import { Acquire, GiveCoordinatesCardsToPlayerPayload } from './interfaces';
 import { AcquireActions } from './actions';
 import { Player } from 'core';
-import { generateCoordinatesCards, generateStocks } from './utils';
+import { generateCoordinatesCards, generateStocksForPlayer } from './utils';
 
 export const acquireReducer = new Reducer<Acquire, AcquireActions>(
     function (state, action, payload) {
@@ -39,7 +39,7 @@ function giveCoordinatesCardsToPlayer(state: Acquire, payload: GiveCoordinatesCa
     const player = players[playerIndex];
 
     const cardsToGiveToPlayer = coordinatesCards.splice(0, count);
-    player.coordinatesCards.concat(cardsToGiveToPlayer);
+    player.coordinatesCards = player.coordinatesCards.concat(cardsToGiveToPlayer);
 
     return state;
 }
@@ -47,6 +47,7 @@ function giveCoordinatesCardsToPlayer(state: Acquire, payload: GiveCoordinatesCa
 function init(state: Acquire): Acquire {
     let newState: Acquire = { ...state };
 
+    newState = initBoard(newState);
     newState = initCoordinatesCards(newState);
     newState = initStocks(newState);
     newState = initPlayers(newState);
@@ -60,7 +61,7 @@ function initCoordinatesCards(state: Acquire): Acquire {
 }
 
 function initStocks(state: Acquire): Acquire {
-    const stocks = generateStocks(state.config);
+    const stocks = generateStocksForPlayer(state.config);
     return { ...state, stocks };
 }
 
@@ -70,8 +71,13 @@ function initPlayers(state: Acquire): Acquire {
     const players: Player[] = [];
 
     for (let i = 0; i < playersCount; i++) {
-        players.push({ cash: initialCashPerPlayer, coordinatesCards: [], stockCards: [] });
+        players.push({ cash: initialCashPerPlayer, coordinatesCards: [], stocks: generateStocksForPlayer(state.config) });
     }
 
     return { ...state, players };
+}
+
+function initBoard(state: Acquire): Acquire {
+    const { boardWidth, boardHeight } = state.config;
+    return { ...state, board: { width: boardWidth, height: boardHeight, tileChains: [] } };
 }
