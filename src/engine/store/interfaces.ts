@@ -9,6 +9,7 @@ export interface Acquire {
     turnNumber: number;
     coordinatesCards: CoordinatesCard[];
     discardedCoordinatesCards: CoordinatesCard[];
+    chosenCoordinatesCard: CoordinatesCard;
     stocks: Stocks;
 }
 
@@ -21,9 +22,14 @@ export interface AcquireConfig {
     hotels: Hotel[];
 }
 
-export type PhaseName = 'init' | 'determineStarter';
+export type PhaseName = 'init' | 'determineStarter' | 'chooseCard';
 
 export interface GiveCoordinatesCardsToPlayerPayload {
     count: number;
     playerIndex: number;
+}
+
+export interface ChooseCoordinatesCardPayload {
+    playerIndex: number;
+    cardIndex: number;
 }

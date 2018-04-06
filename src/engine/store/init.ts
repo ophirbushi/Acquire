@@ -9,5 +9,6 @@ export const acquireInitialState: Acquire = {
     turnNumber: null,
     coordinatesCards: null,
     discardedCoordinatesCards: null,
+    chosenCoordinatesCard: null,
     stocks: null
 };

@@ -1,6 +1,6 @@
 import { Reducer } from 'roxanne';
 
-import { Acquire, GiveCoordinatesCardsToPlayerPayload } from './interfaces';
+import { Acquire, GiveCoordinatesCardsToPlayerPayload, ChooseCoordinatesCardPayload } from './interfaces';
 import { AcquireActions } from './actions';
 import { Player } from 'core';
 import { generateCoordinatesCards, generateStocksForPlayer } from './utils';
@@ -21,6 +21,9 @@ export const acquireReducer = new Reducer<Acquire, AcquireActions>(
         }
         if (this.is('giveCoordinatesCardsToPlayer', action, payload)) {
             return giveCoordinatesCardsToPlayer(state, payload);
+        }
+        if (this.is('chooseCoordinatesCard', action, payload)) {
+            return chooseCoordinatesCard(state, payload);
         }
         return state;
     }
@@ -80,4 +83,17 @@ function initPlayers(state: Acquire): Acquire {
 function initBoard(state: Acquire): Acquire {
     const { boardWidth, boardHeight } = state.config;
     return { ...state, board: { width: boardWidth, height: boardHeight, tileChains: [] } };
+}
+
+function chooseCoordinatesCard(state: Acquire, payload: ChooseCoordinatesCardPayload): Acquire {
+    const { players } = state;
+    const { playerIndex, cardIndex } = payload;
+
+    const currentPlayer = players[playerIndex];
+    const chosenCoordinatesCard = currentPlayer.coordinatesCards.splice(cardIndex, 1)[0];
+
+    const discardedCoordinatesCards = state.discardedCoordinatesCards.slice();
+    discardedCoordinatesCards.push(chosenCoordinatesCard);
+
+    return { ...state, chosenCoordinatesCard, discardedCoordinatesCards };
 }
