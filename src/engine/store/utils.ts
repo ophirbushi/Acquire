@@ -6,8 +6,8 @@ export function generateCoordinatesCards(config: AcquireConfig): CoordinatesCard
 
     const cards: CoordinatesCard[] = [];
 
-    for (var x = 0; x < boardWidth; x++) {
-        for (var y = 0; y < boardHeight; y++) {
+    for (let x = 0; x < boardWidth; x++) {
+        for (let y = 0; y < boardHeight; y++) {
             cards.push({ coordinates: { x, y } });
         }
     }
@@ -25,7 +25,7 @@ export function generateStocksForBank(config: AcquireConfig): Stocks {
 }
 
 export function generateStocksForPlayer(config: AcquireConfig): Stocks {
-    const { hotels, stocksPerHotel } = config;
+    const { hotels } = config;
 
     const stocks: Stocks = {};
 
@@ -39,13 +39,13 @@ export function shuffle(array: any[]) {
     // While there are elements in the array
     while (counter > 0) {
         // Pick a random index
-        let index = Math.floor(Math.random() * counter);
+        const index = Math.floor(Math.random() * counter);
 
         // Decrease counter by 1
         counter--;
 
         // And swap the last element with it
-        let temp = array[counter];
+        const temp = array[counter];
         array[counter] = array[index];
         array[index] = temp;
     }
@@ -55,7 +55,7 @@ export function shuffle(array: any[]) {
 
 export function closestToA1(coor: Coordinates[]): number {
     const distanceDict: { [index: number]: number } = {};
-    
+
     coor.forEach((c, i) => distanceDict[i] = distance(c, { x: 0, y: 0 }));
 
     const sorted = Object.keys(distanceDict)

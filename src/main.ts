@@ -15,16 +15,15 @@ class MockInputSource implements InputProvider {
         stocksPerHotel: 24,
         unmergeableHotelSize: 11
       };
-      return _of(config).toPromise(); 
+      return _of(config).toPromise();
     } else if (type === 'coordinatesCard') {
       return _of(0).toPromise();
     }
     return _of(<any>'mock input').toPromise();
-  }
+  };
 }
 
 const engine = new AcquireEngine(new MockInputSource());
 
 engine.go();
 
-const a = 0;

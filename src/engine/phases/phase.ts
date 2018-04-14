@@ -1,4 +1,3 @@
-import { Store } from 'roxanne';
 import { Acquire, AcquireActions } from '../store';
 import { InputProvider } from '../input-provider';
 import { StateService } from '../state.service';

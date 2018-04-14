@@ -8,4 +8,4 @@ import { acquireEffects } from './effects';
 
 export function generateStore(): Store<Acquire, AcquireActions> {
     return new Store<Acquire, AcquireActions>(acquireInitialState, acquireReducer, acquireEffects);
-} 
+}
