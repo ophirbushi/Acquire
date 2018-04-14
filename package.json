@@ -23,7 +23,7 @@
   "homepage": "https://github.com/ophirbushi/Acquire#readme",
   "dependencies": {
     "deep-equal": "^1.0.1",
-    "roxanne": "^0.1.5",
+    "roxanne": "^0.1.8",
     "rxjs": "^5.5.8"
   },
   "devDependencies": {
