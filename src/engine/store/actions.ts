@@ -7,7 +7,7 @@ export interface AcquireActions {
     init: null;
     giveCoordinatesCardsToPlayer: GiveCoordinatesCardsToPlayerPayload;
     chooseCoordinatesCard: ChooseCoordinatesCardPayload;
-    putCoordinatesCardOnBoard: Coordinates;
+    putCoordinatesCardOnBoard: null;
     endTurn: null;
     setCurrentPlayerIndex: number;
 }

@@ -42,7 +42,7 @@ export class StateService {
         this.store.dispatch('chooseCoordinatesCard', payload);
     }
 
-    putCoordinatesCardOnBoard(coordinates: Coordinates) {
-        this.store.dispatch('putCoordinatesCardOnBoard', coordinates);
+    putCoordinatesCardOnBoard() {
+        this.store.dispatch('putCoordinatesCardOnBoard', null);
     }
 }

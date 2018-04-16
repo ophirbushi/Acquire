@@ -1,4 +1,4 @@
-import { Board, Coordinates, TileChain, CoordinatesCardEffect, Hotel } from '../models';
+import { Board, Coordinates, TileChain, CoordinatesCardEffect, Hotel, CoordinatesCardLegalStatus } from '../models';
 
 export function getNeighboringCoordinatesList(board: Board, coordinates: Coordinates): Coordinates[] {
     const coordinatesList: Coordinates[] = [];
@@ -38,7 +38,9 @@ export function getNeighboringTileChains(board: Board, coordinates: Coordinates)
 
         if (
             tileChain !== undefined &&
-            !neighboringTileChains.some(alreadyInListTileChain => tileChain.hotelName === alreadyInListTileChain.hotelName)
+            !neighboringTileChains.some((alreadyInListTileChain) => {
+                return tileChain.hotelName === alreadyInListTileChain.hotelName;
+            })
         ) {
             neighboringTileChains.push(tileChain);
         }
@@ -59,7 +61,11 @@ export function getCoordinatesCardEffect(board: Board, coordinates: Coordinates)
         return 'setUp';
     }
     // not all neighboring chains have the same hotelId
-    if (neighboringTileChains.some(neighboringTileChain => neighboringTileChains[0].hotelName !== neighboringTileChain.hotelName)) {
+    if (
+        neighboringTileChains.some((neighboringTileChain) => {
+            return neighboringTileChains[0].hotelName !== neighboringTileChain.hotelName;
+        })
+    ) {
         return 'merge';
     }
     // only 1 neighboring chain with hotelId
@@ -71,10 +77,21 @@ export function getCoordinatesCardEffect(board: Board, coordinates: Coordinates)
     throw new Error('error at getCoordinatesCardEffect method');
 }
 
-export function isReplaceable(board: Board, coordinates: Coordinates, unmergeableHotelSize: number): boolean {
-    const effect = getCoordinatesCardEffect(board, coordinates);
-    if (effect !== 'merge') return false;
-    return !isMergeLegal(board, coordinates, unmergeableHotelSize);
+export function getCoordinatesCardLegalStatus(board: Board, coordinates: Coordinates, effect: CoordinatesCardEffect,
+    config: { hotelsCount: number, unmergeableHotelSize: number }): CoordinatesCardLegalStatus {
+    if (effect === 'setUp' && getActiveHotelNames(board).length >= config.hotelsCount) {
+        return 'currentlyIllegal';
+    }
+    if (effect === 'merge' && !isMergeLegal(board, coordinates, config.unmergeableHotelSize)) {
+        return 'replaceable';
+    }
+    return 'legal';
+}
+
+export function getActiveHotelNames(board: Board): string[] {
+    return board.tileChains
+        .map(chain => chain.hotelName)
+        .filter(name => name !== Hotel.NEUTRAL);
 }
 
 export function isMergeLegal(board: Board, coordinates: Coordinates, unmergeableHotelSize: number): boolean {

@@ -1,9 +1,10 @@
-import { Reducer } from 'roxanne';
+import { Reducer, Effects } from 'roxanne';
 
 import { Acquire, GiveCoordinatesCardsToPlayerPayload, ChooseCoordinatesCardPayload } from './interfaces';
 import { AcquireActions } from './actions';
-import { Player, Coordinates } from 'core';
+import { Player, Coordinates, getCoordinatesCardEffect, getCoordinatesCardLegalStatus, Hotel, getTileChain, getNeighboringCoordinatesList, Board, getNeighboringTileChains } from 'core';
 import { generateCoordinatesCards, generateStocksForPlayer } from './utils';
+import { acquireInitialState } from '.';
 
 export const acquireReducer = new Reducer<Acquire, AcquireActions>(
     function (state, action, payload) {
@@ -25,8 +26,8 @@ export const acquireReducer = new Reducer<Acquire, AcquireActions>(
         if (this.is('chooseCoordinatesCard', action, payload)) {
             return chooseCoordinatesCard(state, payload);
         }
-        if (this.is('putCoordinatesCardOnBoard', action, payload)) {
-            return putCoordinatesCardOnBoard(state, payload);
+        if (this.is('putCoordinatesCardOnBoard', action)) {
+            return putCoordinatesCardOnBoard(state);
         }
         return state;
     }
@@ -34,8 +35,15 @@ export const acquireReducer = new Reducer<Acquire, AcquireActions>(
 
 function endTurn(state: Acquire): Acquire {
     const { currentPlayerIndex, config } = state;
+    const { chosenCoordinatesCard, chosenCoordinatesCardEffect, chosenCoordinatesCardLegalStatus } = acquireInitialState;
     const newRound = currentPlayerIndex >= config.playersCount - 1;
-    return { ...state, currentPlayerIndex: newRound ? 0 : currentPlayerIndex + 1 };
+    return {
+        ...state,
+        chosenCoordinatesCard,
+        chosenCoordinatesCardEffect,
+        chosenCoordinatesCardLegalStatus,
+        currentPlayerIndex: newRound ? 0 : currentPlayerIndex + 1
+    };
 }
 
 function giveCoordinatesCardsToPlayer(state: Acquire, payload: GiveCoordinatesCardsToPlayerPayload): Acquire {
@@ -89,18 +97,44 @@ function initBoard(state: Acquire): Acquire {
 }
 
 function chooseCoordinatesCard(state: Acquire, payload: ChooseCoordinatesCardPayload): Acquire {
-    const { players } = state;
+    const { players, board, config } = state;
     const { playerIndex, cardIndex } = payload;
 
     const currentPlayer = players[playerIndex];
     const chosenCoordinatesCard = currentPlayer.coordinatesCards.splice(cardIndex, 1)[0];
+    const chosenCoordinatesCardEffect = getCoordinatesCardEffect(board, chosenCoordinatesCard.coordinates);
+    const chosenCoordinatesCardLegalStatus = getCoordinatesCardLegalStatus(
+        board,
+        chosenCoordinatesCard.coordinates,
+        chosenCoordinatesCardEffect,
+        {
+            unmergeableHotelSize: config.unmergeableHotelSize,
+            hotelsCount: config.hotels.length
+        }
+    );
 
-    const discardedCoordinatesCards = state.discardedCoordinatesCards.slice();
-    discardedCoordinatesCards.push(chosenCoordinatesCard);
-
-    return { ...state, chosenCoordinatesCard, discardedCoordinatesCards };
+    return { ...state, chosenCoordinatesCard, chosenCoordinatesCardEffect, chosenCoordinatesCardLegalStatus };
 }
 
-function putCoordinatesCardOnBoard(state: Acquire, coordinates: Coordinates): Acquire {
+function putCoordinatesCardOnBoard(state: Acquire): Acquire {
+    const { chosenCoordinatesCard, chosenCoordinatesCardEffect } = state;
+    const { coordinates } = chosenCoordinatesCard;
 
+    const board: Board = { ...state.board, tileChains: state.board.tileChains.slice() };
+
+    if (chosenCoordinatesCardEffect === 'none') {
+        board.tileChains.push({ coordinatesList: [coordinates], hotelName: Hotel.NEUTRAL });
+    } else if (chosenCoordinatesCardEffect === 'enlarge') {
+        const tileChain = getTileChain(board, coordinates);
+        tileChain.coordinatesList.push(coordinates);
+        getNeighboringTileChains(board, coordinates)
+            .forEach((neighbor, index) => {
+                tileChain.coordinatesList.push(...neighbor.coordinatesList.splice(0, neighbor.coordinatesList.length));
+                board.tileChains.splice(index, 1);
+            });
+    } else {
+        throw new Error('putCoordinatesCardOnBoard should only be called on "none" and "enlarge" effects');
+    }
+
+    return { ...state, board };
 }

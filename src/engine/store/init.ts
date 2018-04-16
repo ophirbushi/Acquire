@@ -10,5 +10,7 @@ export const acquireInitialState: Acquire = {
     coordinatesCards: null,
     discardedCoordinatesCards: null,
     chosenCoordinatesCard: null,
+    chosenCoordinatesCardEffect: null,
+    chosenCoordinatesCardLegalStatus: null,
     stocks: null
 };

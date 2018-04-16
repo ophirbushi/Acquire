@@ -1,7 +1,9 @@
-import { isReplaceable } from '../core';
 import { Acquire, PhaseName } from './store';
 import { InputProvider } from './input-provider';
-import { Phase, initPhase, determineStarterPhase, chooseCardPhase, replaceCardPhase, putCardOnBoardPhase } from './phases';
+import {
+    Phase, initPhase, determineStarterPhase, chooseCardPhase, replaceCardPhase,
+    putCardOnBoardPhase, setupPhase, mergePhase
+} from './phases';
 import { StateService } from './state.service';
 
 type PhasePair = [PhaseName, Phase];
@@ -51,19 +53,31 @@ export class AcquireEngine {
             ['determineStarter', determineStarterPhase],
             ['chooseCard', chooseCardPhase],
             ['replaceCard', replaceCardPhase],
-            ['putCardOnBoard', putCardOnBoardPhase]
+            ['putCardOnBoard', putCardOnBoardPhase],
+            ['setUp', setupPhase],
+            ['merge', mergePhase]
         ];
         pairs.forEach(pair => this.phases[pair[0]] = pair[1]);
     }
 
     private onChooseCardDone() {
-        const { board, chosenCoordinatesCard, config } = this.snapshot;
+        const { board, chosenCoordinatesCardEffect, chosenCoordinatesCardLegalStatus } = this.snapshot;
 
-        const replaceable = isReplaceable(board, chosenCoordinatesCard.coordinates, config.unmergeableHotelSize);
-        if (replaceable) {
+        if (chosenCoordinatesCardLegalStatus === 'replaceable') {
             this.setPhase('replaceCard');
-        } else {
-            this.setPhase('putCardOnBoard');
+            return;
+        }
+
+        switch (chosenCoordinatesCardEffect) {
+            case 'setUp':
+                this.setPhase('setUp');
+                break;
+            case 'merge':
+                this.setPhase('merge');
+                break;
+            default:
+                this.setPhase('putCardOnBoard');
+                break;
         }
     }
 }
