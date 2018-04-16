@@ -8,7 +8,6 @@ export interface Acquire {
     phaseName: PhaseName;
     turnNumber: number;
     coordinatesCards: CoordinatesCard[];
-    discardedCoordinatesCards: CoordinatesCard[];
     chosenCoordinatesCard: CoordinatesCard;
     chosenCoordinatesCardEffect: CoordinatesCardEffect;
     chosenCoordinatesCardLegalStatus: CoordinatesCardLegalStatus;

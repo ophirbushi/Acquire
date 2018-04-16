@@ -7,6 +7,7 @@
     "baseUrl": "./src",
     "outDir": "dist",
     "lib": [
+      "dom",
       "es2015"
     ]
   },

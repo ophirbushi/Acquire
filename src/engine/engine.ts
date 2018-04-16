@@ -41,6 +41,11 @@ export class AcquireEngine {
                 this.onChooseCardDone();
                 break;
             case 'putCardOnBoard':
+
+                // temp
+                this.stateService.endTurn();
+                this.setPhase('chooseCard');
+
                 break;
             default:
                 throw new Error(`[GameEngine] unknown phaseName: ${phaseName}`);

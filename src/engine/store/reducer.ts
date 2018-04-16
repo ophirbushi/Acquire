@@ -2,9 +2,12 @@ import { Reducer, Effects } from 'roxanne';
 
 import { Acquire, GiveCoordinatesCardsToPlayerPayload, ChooseCoordinatesCardPayload } from './interfaces';
 import { AcquireActions } from './actions';
-import { Player, Coordinates, getCoordinatesCardEffect, getCoordinatesCardLegalStatus, Hotel, getTileChain, getNeighboringCoordinatesList, Board, getNeighboringTileChains } from 'core';
+import {
+    Player, Coordinates, getCoordinatesCardEffect, getCoordinatesCardLegalStatus, Hotel, getTileChain, getNeighboringCoordinatesList,
+    Board, getNeighboringTileChains
+} from '../../core';
 import { generateCoordinatesCards, generateStocksForPlayer } from './utils';
-import { acquireInitialState } from '.';
+import { acquireInitialState } from './init';
 
 export const acquireReducer = new Reducer<Acquire, AcquireActions>(
     function (state, action, payload) {
@@ -16,6 +19,9 @@ export const acquireReducer = new Reducer<Acquire, AcquireActions>(
         }
         if (this.is('init', action)) {
             return init(state);
+        }
+        if (this.is('setCurrentPlayerIndex', action, payload)) {
+            return { ...state, currentPlayerIndex: payload };
         }
         if (this.is('endTurn', action)) {
             return endTurn(state);
@@ -42,20 +48,23 @@ function endTurn(state: Acquire): Acquire {
         chosenCoordinatesCard,
         chosenCoordinatesCardEffect,
         chosenCoordinatesCardLegalStatus,
-        currentPlayerIndex: newRound ? 0 : currentPlayerIndex + 1
+        currentPlayerIndex: newRound ? 0 : currentPlayerIndex + 1,
+        turnNumber: state.turnNumber++
     };
 }
 
 function giveCoordinatesCardsToPlayer(state: Acquire, payload: GiveCoordinatesCardsToPlayerPayload): Acquire {
-    const { players, coordinatesCards } = state;
     const { count, playerIndex } = payload;
 
-    const player = players[playerIndex];
+    const players = state.players.slice();
+    const coordinatesCards = state.coordinatesCards.slice();
+
+    const player: Player = players[playerIndex];
 
     const cardsToGiveToPlayer = coordinatesCards.splice(0, count);
     player.coordinatesCards = player.coordinatesCards.concat(cardsToGiveToPlayer);
 
-    return state;
+    return { ...state, players, coordinatesCards };
 }
 
 function init(state: Acquire): Acquire {
@@ -71,7 +80,7 @@ function init(state: Acquire): Acquire {
 
 function initCoordinatesCards(state: Acquire): Acquire {
     const coordinatesCards = generateCoordinatesCards(state.config);
-    return { ...state, coordinatesCards, discardedCoordinatesCards: [] };
+    return { ...state, coordinatesCards };
 }
 
 function initStocks(state: Acquire): Acquire {

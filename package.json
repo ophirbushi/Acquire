@@ -27,6 +27,8 @@
     "rxjs": "^5.5.8"
   },
   "devDependencies": {
+    "@types/node": "^9.6.5",
+    "deep-object-diff": "^1.1.0",
     "typescript": "^2.7.1"
   }
 }

@@ -7,11 +7,11 @@ class MockInputSource implements InputProvider {
   getInput = function (type: string, state: Acquire) {
     if (type === 'config') {
       const config: AcquireConfig = {
-        boardHeight: 12,
-        boardWidth: 8,
+        boardHeight: 4,
+        boardWidth: 4,
         hotels: [{ name: 'Continental', prestige: 'expensive' }],
         initialCashPerPlayer: 5000,
-        playersCount: 3,
+        playersCount: 3, 
         stocksPerHotel: 24,
         unmergeableHotelSize: 11
       };
@@ -26,4 +26,3 @@ class MockInputSource implements InputProvider {
 const engine = new AcquireEngine(new MockInputSource());
 
 engine.go();
-
