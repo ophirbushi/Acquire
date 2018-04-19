@@ -27,7 +27,9 @@ export const acquireDefaultConfig: AcquireConfig = {
         { name: 'Holiday', prestige: 'cheap' }
     ],
     initialCashPerPlayer: 5000,
+    coordinatesCardsPerPlayer: 6,
     playersCount: 4,
     stocksPerHotel: 24,
-    unmergeableHotelSize: 11
+    unmergeableHotelSize: 11,
+    gameEndingHotelSize: 42
 };

@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 
 import { AcquireEngine, InputProvider } from '../../../engine';
 import { Acquire, AcquireConfig } from '../../../engine/store';
 import { Observable } from 'rxjs/Observable';
-import { Player, Board, getTileChain } from '../../../core';
+import { Player, Board, getTileChain, CoordinatesCard, Coordinates } from '../../../core';
 
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { map, take } from 'rxjs/operators';
+import { map, take, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +17,10 @@ export class AppComponent implements OnInit, InputProvider {
   engine: AcquireEngine;
   players$: Observable<Player[]>;
   board$: Observable<Board>;
+
+  cardClick$ = new EventEmitter<{ playerIndex: number, cardIndex: number }>();
+
+  hoveredCoordinates: Coordinates = { x: -1, y: -1 };
 
   message: string = '';
 
@@ -37,9 +41,14 @@ export class AppComponent implements OnInit, InputProvider {
       case 'init':
         return <any>Promise.resolve(<AcquireConfig>{});
       case 'chooseCard':
-        const choice = await this.prompt(`choose a card:`
-          + ` ${state.players[state.currentPlayerIndex].coordinatesCards.length}`);
-        return <any>Promise.resolve(choice);
+        this.message = `player ${state.currentPlayerIndex + 1} - choose a card:`;
+        return this.cardClick$
+          .pipe(
+            filter(e => e.playerIndex === state.currentPlayerIndex),
+            take(1),
+            map(e => e.cardIndex),
+        )
+          .toPromise();
       default:
         debugger;
         break;
@@ -81,14 +90,16 @@ export class AppComponent implements OnInit, InputProvider {
     }
   }
 
-  prompt(message: string): Promise<number> {
-    this.message = message;
-    return fromEvent(document.querySelector('button'), 'click')
-      .pipe(
-        map(() => +document.querySelector('input').value),
-        take(1)
-      )
-      .toPromise();
+  onCardClick(playerIndex: number, cardIndex: number) {
+    this.cardClick$.emit({ playerIndex, cardIndex });
+  }
+
+  onCardMouseEnter(card: CoordinatesCard) {
+    this.hoveredCoordinates = card.coordinates;
+  }
+
+  onCardMouseLeave() {
+    this.hoveredCoordinates = { x: -1, y: -1 };
   }
 
   enumerate(x: number): number[] {

@@ -17,11 +17,13 @@ export interface Acquire {
 export interface AcquireConfig {
     playersCount: number;
     initialCashPerPlayer: number;
+    coordinatesCardsPerPlayer: number;
     boardWidth: number;
     boardHeight: number;
     stocksPerHotel: number;
     unmergeableHotelSize: number;
     hotels: Hotel[];
+    gameEndingHotelSize: number;
 }
 
 export type PhaseName = 'init' | 'determineStarter' | 'chooseCard' | 'replaceCard' | 'putCardOnBoard' |

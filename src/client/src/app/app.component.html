@@ -1,13 +1,17 @@
-{{message}}
-<input type="text" />
-<button type="button">Submit</button>
-
+<h1>
+  {{message}}
+</h1>
 <table style="display: inline-table; vertical-align: top;" *ngIf="board$ | async as board">
+  <tr>
+    <td></td>
+    <td *ngFor="let col of enumerate(board.width); let x = index;">{{x}}</td>
+  </tr>
   <tr *ngFor="let row of enumerate(board.height); let y = index;">
-    <td *ngFor="let col of enumerate(board.width); let x = index;">
-      <div [style.background-color]="getTileColor(x,y)" style="height: 100%;">
-
-      </div>
+    <td>
+      {{y}}
+    </td>
+    <td *ngFor="let col of enumerate(board.width); let x = index;" [class.hovered]="hoveredCoordinates.x === x && hoveredCoordinates.y === y">
+      <div [style.background-color]="getTileColor(x,y)" style="height: 100%;"></div>
     </td>
   </tr>
 </table>
@@ -16,7 +20,8 @@
   <div *ngFor="let player of players; let i = index;">
     <h2>Player {{ i + 1 }}</h2>
     <div>Cards:
-      <span *ngFor="let card of player.coordinatesCards">[{{card.coordinates.x}},{{card.coordinates.y}}],</span>
+      <span *ngFor="let card of player.coordinatesCards; let cardIndex = index;" (mouseenter)="onCardMouseEnter(card)" (mouseleave)="onCardMouseLeave()"
+        (click)="onCardClick(i, cardIndex)">[{{card.coordinates.x}},{{card.coordinates.y}}],</span>
     </div>
   </div>
 </div>
