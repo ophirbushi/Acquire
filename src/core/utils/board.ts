@@ -56,25 +56,17 @@ export function getNeighboringTileChains(board: Board, coordinates: Coordinates)
 export function getCoordinatesCardEffect(board: Board, coordinates: Coordinates): CoordinatesCardEffect {
     const neighboringTileChains = getNeighboringTileChains(board, coordinates);
 
-    // no neighboring chains
     if (neighboringTileChains.length === 0) {
         return 'none';
     }
-    // all neighboring chains do not have hotelId
-    if (neighboringTileChains.every(neighboringTileChain => neighboringTileChain.hotelName === undefined)) {
+    if (neighboringTileChains.every(chain => chain.hotelName === Hotel.NEUTRAL)) {
         return 'setUp';
     }
-    // not all neighboring chains have the same hotelId
-    if (
-        neighboringTileChains.some((neighboringTileChain) => {
-            return neighboringTileChains[0].hotelName !== neighboringTileChain.hotelName;
-        })
-    ) {
-        return 'merge';
-    }
-    // only 1 neighboring chain with hotelId
-    if (neighboringTileChains.length === 1 && neighboringTileChains[0].hotelName !== undefined) {
+    if (neighboringTileChains.filter(chain => chain.hotelName && chain.hotelName !== Hotel.NEUTRAL).length === 1) {
         return 'enlarge';
+    }
+    if (neighboringTileChains.filter(chain => chain.hotelName && chain.hotelName !== Hotel.NEUTRAL).length > 1) {
+        return 'merge';
     }
 
     // should not have reached here
