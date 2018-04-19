@@ -7,9 +7,7 @@
     <td *ngFor="let col of enumerate(board.width); let x = index;">{{x}}</td>
   </tr>
   <tr *ngFor="let row of enumerate(board.height); let y = index;">
-    <td>
-      {{y}}
-    </td>
+    <td> {{y}} </td>
     <td *ngFor="let col of enumerate(board.width); let x = index;" [class.hovered]="hoveredCoordinates.x === x && hoveredCoordinates.y === y">
       <div [style.background-color]="getTileColor(x,y)" style="height: 100%;"></div>
     </td>
