@@ -9,7 +9,8 @@ import { StateService } from './state.service';
 type PhasePair = [PhaseName, Phase];
 
 export class AcquireEngine {
-    private readonly stateService = new StateService();
+    // public only for dev purposes. should be private when done.
+    public readonly stateService = new StateService();
     private readonly phases: { [name: string]: Phase } = {};
     private get snapshot(): Acquire { return this.stateService.snapshot; }
 

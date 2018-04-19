@@ -1,4 +1,4 @@
-import { Coordinates } from 'core';
+import { Coordinates } from '../../core';
 import { PhaseName, AcquireConfig, GiveCoordinatesCardsToPlayerPayload, ChooseCoordinatesCardPayload } from './interfaces';
 
 export interface AcquireActions {

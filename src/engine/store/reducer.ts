@@ -7,7 +7,7 @@ import {
     Board, getNeighboringTileChains
 } from '../../core';
 import { generateCoordinatesCards, generateStocksForPlayer } from './utils';
-import { acquireInitialState } from './init';
+import { acquireInitialState, acquireDefaultConfig } from './init';
 
 export const acquireReducer = new Reducer<Acquire, AcquireActions>(
     function (state, action, payload) {
@@ -15,7 +15,7 @@ export const acquireReducer = new Reducer<Acquire, AcquireActions>(
             return { ...state, phaseName: payload };
         }
         if (this.is('loadConfig', action, payload)) {
-            return { ...state, config: payload };
+            return { ...state, config: { ...acquireDefaultConfig, ...payload } };
         }
         if (this.is('init', action)) {
             return init(state);

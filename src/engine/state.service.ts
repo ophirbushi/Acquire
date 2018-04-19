@@ -2,11 +2,12 @@ import { Observable } from 'rxjs/Observable';
 import { Store } from 'roxanne';
 
 import { Acquire, AcquireActions, generateStore, AcquireConfig, PhaseName, GiveCoordinatesCardsToPlayerPayload, ChooseCoordinatesCardPayload } from './store';
-import { Coordinates } from 'core';
+import { Coordinates } from '../core';
 
 export class StateService {
 
-    private readonly store: Store<Acquire, AcquireActions> = generateStore();
+    // public only for dev purposes. should be private when done.
+    public readonly store: Store<Acquire, AcquireActions> = generateStore();
 
     get snapshot(): Acquire { return this.store.value; }
 
