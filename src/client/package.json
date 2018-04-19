@@ -1,30 +1,18 @@
 {
-  "name": "acquire",
-  "version": "1.0.0",
-  "description": "acquire game",
-  "main": "dist/main.js",
+  "name": "client",
+  "version": "0.0.0",
+  "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
-    "start": "node dist/main.js"
+    "preinstall": "echo DO NOT INSTALL THIS PROJECT, ONLY THE ROOT PROJECT. && exit 1",
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build --prod",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ophirbushi/Acquire.git"
-  },
-  "keywords": [
-    "acquire"
-  ],
-  "author": "Ophir Bushinsky",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ophirbushi/Acquire/issues"
-  },
-  "homepage": "https://github.com/ophirbushi/Acquire#readme",
+  "private": true,
   "dependencies": {
-    "deep-equal": "^1.0.1",
-    "roxanne": "^0.1.8",
-    "rxjs": "^5.5.8",
     "@angular/animations": "^5.2.0",
     "@angular/common": "^5.2.0",
     "@angular/compiler": "^5.2.0",
@@ -35,10 +23,10 @@
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
     "core-js": "^2.4.1",
+    "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
-    "deep-object-diff": "^1.1.0",
     "@angular/cli": "~1.7.4",
     "@angular/compiler-cli": "^5.2.0",
     "@angular/language-service": "^5.2.0",

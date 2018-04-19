@@ -1,0 +1,11 @@
+{
+  "name": "acquire-core",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "echo DO NOT INSTALL THIS PROJECT, ONLY THE ROOT PROJECT. && exit 1"
+  },
+  "author": "Ophir Bushinsky",
+  "license": "ISC"
+}

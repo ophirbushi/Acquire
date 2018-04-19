@@ -1,0 +1,16 @@
+{
+  "name": "acquire-engine",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "echo DO NOT INSTALL THIS PROJECT, ONLY THE ROOT PROJECT. && exit 1"
+  },
+  "dependencies": {
+    "deep-equal": "^1.0.1",
+    "roxanne": "^0.1.8",
+    "rxjs": "^5.5.8"
+  },
+  "author": "Ophir Bushinsky",
+  "license": "ISC"
+}
