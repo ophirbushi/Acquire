@@ -1,0 +1,22 @@
+{{message}}
+<input type="text" />
+<button type="button">Submit</button>
+
+<table style="display: inline-table; vertical-align: top;" *ngIf="board$ | async as board">
+  <tr *ngFor="let row of enumerate(board.height); let y = index;">
+    <td *ngFor="let col of enumerate(board.width); let x = index;">
+      <div [style.background-color]="getTileColor(x,y)" style="height: 100%;">
+
+      </div>
+    </td>
+  </tr>
+</table>
+
+<div *ngIf="players$ | async as players" style="display: inline-block;">
+  <div *ngFor="let player of players; let i = index;">
+    <h2>Player {{ i + 1 }}</h2>
+    <div>Cards:
+      <span *ngFor="let card of player.coordinatesCards">[{{card.coordinates.x}},{{card.coordinates.y}}],</span>
+    </div>
+  </div>
+</div>

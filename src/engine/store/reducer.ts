@@ -94,7 +94,11 @@ function initPlayers(state: Acquire): Acquire {
     const players: Player[] = [];
 
     for (let i = 0; i < playersCount; i++) {
-        players.push({ cash: initialCashPerPlayer, coordinatesCards: [], stocks: generateStocksForPlayer(state.config) });
+        players.push({
+            cash: initialCashPerPlayer,
+            coordinatesCards: [],
+            stocks: generateStocksForPlayer(state.config)
+        });
     }
 
     return { ...state, players };
@@ -122,7 +126,12 @@ function chooseCoordinatesCard(state: Acquire, payload: ChooseCoordinatesCardPay
         }
     );
 
-    return { ...state, chosenCoordinatesCard, chosenCoordinatesCardEffect, chosenCoordinatesCardLegalStatus };
+    return {
+        ...state,
+        chosenCoordinatesCard,
+        chosenCoordinatesCardEffect,
+        chosenCoordinatesCardLegalStatus
+    };
 }
 
 function putCoordinatesCardOnBoard(state: Acquire): Acquire {

@@ -25,7 +25,11 @@ export function getNeighboringCoordinatesList(board: Board, coordinates: Coordin
 }
 
 export function getTileChain(board: Board, coordinates: Coordinates): TileChain | undefined {
-    return board.tileChains.find(tileChain => tileChain.coordinatesList.indexOf(coordinates) > -1);
+    return board.tileChains.find((tileChain) => {
+        return tileChain.coordinatesList.findIndex((c) => {
+            return c.x === coordinates.x && c.y === coordinates.y;
+        }) > -1;
+    });
 }
 
 export function getNeighboringTileChains(board: Board, coordinates: Coordinates): TileChain[] {
