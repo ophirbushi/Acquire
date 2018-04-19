@@ -143,13 +143,18 @@ function putCoordinatesCardOnBoard(state: Acquire): Acquire {
     if (chosenCoordinatesCardEffect === 'none') {
         board.tileChains.push({ coordinatesList: [coordinates], hotelName: Hotel.NEUTRAL });
     } else if (chosenCoordinatesCardEffect === 'enlarge') {
-        const tileChain = getTileChain(board, coordinates);
-        tileChain.coordinatesList.push(coordinates);
-        getNeighboringTileChains(board, coordinates)
-            .forEach((neighbor, index) => {
-                tileChain.coordinatesList.push(...neighbor.coordinatesList.splice(0, neighbor.coordinatesList.length));
-                board.tileChains.splice(index, 1);
-            });
+
+        const tileChain = { coordinatesList: [coordinates], hotelName: Hotel.NEUTRAL };
+        const neighbors = getNeighboringTileChains(board, coordinates);
+
+        neighbors.forEach((neighbor) => {
+            tileChain.coordinatesList.push(...neighbor.coordinatesList.splice(0,
+                neighbor.coordinatesList.length));
+            const index = board.tileChains.findIndex(chain => chain === neighbor);
+            board.tileChains.splice(index, 1);
+        });
+
+        board.tileChains.push(tileChain);
     } else {
         throw new Error('putCoordinatesCardOnBoard should only be called on "none" and "enlarge" effects');
     }

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Player, Board, getTileChain, CoordinatesCard, Coordinates } from '../../../core';
 
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import { map, take, filter } from 'rxjs/operators';
+import { map, take, filter, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +33,10 @@ export class AppComponent implements OnInit, InputProvider {
     this.engine.go();
 
     this.engine.stateService.store.select('board')
+      .pipe(tap(b => {
+        if (!b || !b.tileChains) return;
+        console.log('chains count: ', b.tileChains.length);
+      }))
       .subscribe(state => console.log(JSON.stringify(state)));
   }
 
