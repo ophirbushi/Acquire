@@ -17,18 +17,22 @@ export class AppComponent implements OnInit, InputProvider {
   engine: AcquireEngine;
   players$: Observable<Player[]>;
   board$: Observable<Board>;
-
   cardClick$ = new EventEmitter<{ playerIndex: number, cardIndex: number }>();
-
+  currentPlayerIndex$: Observable<number>;
   hoveredCoordinates: Coordinates = { x: -1, y: -1 };
-
   message: string = '';
+
+  get currentPlayer(): Player {
+    const { currentPlayerIndex, players } = this.engine.stateService.snapshot;
+    return players[currentPlayerIndex];
+  }
 
   ngOnInit() {
     this.engine = new AcquireEngine(this);
 
     this.board$ = this.engine.stateService.select('board');
     this.players$ = this.engine.stateService.select('players');
+    this.currentPlayerIndex$ = this.engine.stateService.select('currentPlayerIndex');
 
     this.engine.go();
 
@@ -106,7 +110,32 @@ export class AppComponent implements OnInit, InputProvider {
     this.hoveredCoordinates = { x: -1, y: -1 };
   }
 
+  onTileMouseEnter(x, y) {
+    if (this.isPossibleCard(x, y)) {
+      this.hoveredCoordinates = { x, y };
+    }
+  }
+
+  onTileMouseLeave(x, y) {
+    this.hoveredCoordinates = { x: -1, y: -1 };
+  }
+
+  onTileClick(x, y) {
+    if (this.isPossibleCard(x, y)) {
+      const { currentPlayerIndex } = this.engine.stateService.snapshot;
+      this.cardClick$.emit({ playerIndex: currentPlayerIndex, cardIndex: this.getCurrentPlayerCardIndex(x, y) });
+    }
+  }
+
   enumerate(x: number): number[] {
     return new Array(x);
+  }
+
+  isPossibleCard(x: number, y: number): boolean {
+    return this.getCurrentPlayerCardIndex(x, y) > -1;
+  }
+
+  private getCurrentPlayerCardIndex(x, y): number {
+    return this.currentPlayer.coordinatesCards.findIndex(c => c.coordinates.x === x && c.coordinates.y === y);
   }
 }

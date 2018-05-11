@@ -8,7 +8,9 @@
   </tr>
   <tr *ngFor="let row of enumerate(board.height); let y = index;">
     <td> {{y}} </td>
-    <td *ngFor="let col of enumerate(board.width); let x = index;" [class.hovered]="hoveredCoordinates.x === x && hoveredCoordinates.y === y">
+    <td *ngFor="let col of enumerate(board.width); let x = index;" [class.hovered]="hoveredCoordinates.x === x && hoveredCoordinates.y === y"
+      [class.possible]="isPossibleCard(x, y)" [attr.data-x]="x" [attr.data-y]="y" (click)="onTileClick(x,y)" (mouseenter)="onTileMouseEnter(x,y)"
+      (mouseleave)="onTileMouseLeave(x,y)">
       <div [style.background-color]="getTileColor(x,y)" style="height: 100%;"></div>
     </td>
   </tr>
@@ -16,10 +18,10 @@
 
 <div *ngIf="players$ | async as players" style="display: inline-block;">
   <div *ngFor="let player of players; let i = index;">
-    <h2>Player {{ i + 1 }}</h2>
+    <h2 [class.current]="(currentPlayerIndex$ | async) === i">Player {{ i + 1 }}</h2>
     <div>Cards:
-      <span *ngFor="let card of player.coordinatesCards; let cardIndex = index;" (mouseenter)="onCardMouseEnter(card)" (mouseleave)="onCardMouseLeave()"
-        (click)="onCardClick(i, cardIndex)">[{{card.coordinates.x}},{{card.coordinates.y}}],</span>
+      <span class="card" *ngFor="let card of player.coordinatesCards; let cardIndex = index; let last = last;" (mouseenter)="onCardMouseEnter(card)"
+        (mouseleave)="onCardMouseLeave()" (click)="onCardClick(i, cardIndex)">[{{card.coordinates.x}},{{card.coordinates.y}}] </span>
     </div>
   </div>
 </div>

@@ -2,10 +2,25 @@ td {
   width: 30px;
   height: 30px;
   border: 1px solid;
+  box-sizing: border-box;
   text-align: center;
   &.hovered {
     &>div {
       background-color: aquamarine !important;
     }
   }
+}
+
+.card {
+  cursor: pointer;
+}
+
+.current {
+  color: aquamarine;
+}
+
+.possible {
+  cursor: pointer;
+  border-color: aquamarine;
+  border-width: 3px;
 }
