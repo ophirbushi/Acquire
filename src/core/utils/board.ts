@@ -1,4 +1,5 @@
 import { Board, Coordinates, TileChain, CoordinatesCardEffect, Hotel, CoordinatesCardLegalStatus } from '../models';
+import { naiveDeDupe } from './_internal/internal-utils';
 
 export function getNeighboringCoordinatesList(board: Board, coordinates: Coordinates): Coordinates[] {
     const coordinatesList: Coordinates[] = [];
@@ -33,24 +34,12 @@ export function getTileChain(board: Board, coordinates: Coordinates): TileChain 
 }
 
 export function getNeighboringTileChains(board: Board, coordinates: Coordinates): TileChain[] {
-    const neighboringTileChains: TileChain[] = [];
-
     const neighboringCoordinatesList = getNeighboringCoordinatesList(board, coordinates);
 
-    neighboringCoordinatesList.forEach((neighboringCoordinates) => {
-        const tileChain = getTileChain(board, neighboringCoordinates);
-
-        if (
-            tileChain !== undefined &&
-            !neighboringTileChains.some((alreadyInListTileChain) => {
-                return tileChain.hotelName === alreadyInListTileChain.hotelName;
-            })
-        ) {
-            neighboringTileChains.push(tileChain);
-        }
-    });
-
-    return neighboringTileChains;
+    return neighboringCoordinatesList
+        .map(c => getTileChain(board, c))
+        .filter(chain => chain != null)
+        .filter(naiveDeDupe);
 }
 
 export function getCoordinatesCardEffect(board: Board, coordinates: Coordinates): CoordinatesCardEffect {
