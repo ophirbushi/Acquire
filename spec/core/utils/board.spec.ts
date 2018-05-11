@@ -242,6 +242,31 @@ describe('board utils', () => {
         });
     });
 
+    describe('isMergeLegal', () => {
+        let unmergeableSize: number;
+
+        beforeEach(() => {
+            unmergeableSize = undefined;
+            pushChain(Hotel.NEUTRAL, [0, 0], [1, 0], [2, 0]);
+            pushChain('a', [0, 2], [1, 2]);
+            pushChain('b', [0, 4], [1, 4], [2, 4]);
+        });
+
+        it('should return true if number of non-neutral hotels is less than 2', () => {
+            unmergeableSize = 2;
+            expect(isMergeLegal(board, { x: 0, y: 1 }, unmergeableSize)).toBe(true);
+        });
+
+        it('should return true if number of unmergeable non-neutral hotels is less than 2', () => {
+            unmergeableSize = 3;
+            expect(isMergeLegal(board, { x: 0, y: 3 }, unmergeableSize)).toBe(true);
+        });
+
+        it('should return false if number of unmergeable non-neutral hotels is more than 1', () => {
+            unmergeableSize = 2; 
+            expect(isMergeLegal(board, { x: 0, y: 3 }, unmergeableSize)).toBe(false);
+        });
+    });
 
     function resetBoard() {
         board = { width: 7, height: 7, tileChains: [] };
