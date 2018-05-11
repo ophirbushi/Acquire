@@ -27,59 +27,6 @@ describe('board utils', () => {
         });
     });
 
-    describe('getCoordinatesCardEffect', () => {
-        let result: CoordinatesCardEffect;
-
-        beforeEach(() => {
-            result = undefined;
-        });
-
-        it('should return "none" if tile is not neighboring any chain', () => {
-            result = getCoordinatesCardEffect(board, { x: 0, y: 0 });
-            expect(result).toBe('none');
-        });
-
-        it('should return "setUp" if tile is surrounded only by NEUTRAL chains', () => {
-            pushChain(Hotel.NEUTRAL, [0, 0]);
-            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
-            expect(result).toBe('setUp');
-
-            pushChain('Palmas', [2, 0]);
-            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
-            expect(result).not.toBe('setUp');
-        });
-
-        it('should return "enlarge" if tile neighbors only one non NEUTRAL hotel', () => {
-            pushChain('Palmas', [0, 0]);
-            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
-            expect(result).toBe('enlarge');
-
-            pushChain(Hotel.NEUTRAL, [2, 0]);
-            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
-            expect(result).toBe('enlarge');
-
-            pushChain('Casablanca', [1, 1]);
-            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
-            expect(result).not.toBe('enlarge');
-        });
-
-        it('should return "merge" if tile neighbors more than one non NEUTRAL hotel', () => {
-            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
-            expect(result).not.toBe('merge');
-
-            pushChain('Palmas', [0, 0]);
-            expect(result).not.toBe('merge');
-
-            pushChain(Hotel.NEUTRAL, [2, 0]);
-            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
-            expect(result).not.toBe('merge');
-
-            pushChain('Casablanca', [1, 1]);
-            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
-            expect(result).toBe('merge');
-        });
-    });
-
     describe('getCoordinatesCardLegalStatus', () => {
         let result: CoordinatesCardLegalStatus;
 
@@ -211,6 +158,90 @@ describe('board utils', () => {
             }
         }
     });
+
+    describe('getNeighboringTileChains', () => {
+
+        it('should return an empty array if no neighbors', () => {
+            expect(getNeighboringTileChains(board, { x: 1, y: 1 })).toEqual([]);
+        });
+
+        it('should return only the neighboring chains of a coordinate', () => {
+            pushChain('a', [0, 1]);
+            pushChain('b', [1, 0]);
+            pushChain('c', [2, 1]);
+            pushChain('d', [1, 2]);
+            pushChain('e', [2, 2]);
+
+            const result = getNeighboringTileChains(board, { x: 1, y: 1 });
+
+            ['a', 'b', 'c', 'd'].forEach(name => expect(result.some(chain => chain.hotelName === name)).toBe(true));
+            expect(result.some(chain => chain.hotelName === 'e')).toBe(false);
+        });
+
+        it('should add a chain only once to the result even if it borders the input in more than 1 tile', () => {
+            pushChain('a', [0, 0], [0, 1], [1, 0]);
+            pushChain('b', [1, 2]);
+
+            const result = getNeighboringTileChains(board, { x: 1, y: 1 });
+
+            ['a', 'b'].forEach(name => expect(result.some(chain => chain.hotelName === name)).toBe(true));
+            expect(result.length).toBe(2);
+        });
+    });
+
+    describe('getCoordinatesCardEffect', () => {
+        let result: CoordinatesCardEffect;
+
+        beforeEach(() => {
+            result = undefined;
+        });
+
+        it('should return "none" if tile is not neighboring any chain', () => {
+            result = getCoordinatesCardEffect(board, { x: 0, y: 0 });
+            expect(result).toBe('none');
+        });
+
+        it('should return "setUp" if tile is surrounded only by NEUTRAL chains', () => {
+            pushChain(Hotel.NEUTRAL, [0, 0]);
+            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
+            expect(result).toBe('setUp');
+
+            pushChain('Palmas', [2, 0]);
+            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
+            expect(result).not.toBe('setUp');
+        });
+
+        it('should return "enlarge" if tile neighbors only one non NEUTRAL hotel', () => {
+            pushChain('Palmas', [0, 0]);
+            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
+            expect(result).toBe('enlarge');
+
+            pushChain(Hotel.NEUTRAL, [2, 0]);
+            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
+            expect(result).toBe('enlarge');
+
+            pushChain('Casablanca', [1, 1]);
+            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
+            expect(result).not.toBe('enlarge');
+        });
+
+        it('should return "merge" if tile neighbors more than one non NEUTRAL hotel', () => {
+            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
+            expect(result).not.toBe('merge');
+
+            pushChain('Palmas', [0, 0]);
+            expect(result).not.toBe('merge');
+
+            pushChain(Hotel.NEUTRAL, [2, 0]);
+            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
+            expect(result).not.toBe('merge');
+
+            pushChain('Casablanca', [1, 1]);
+            result = getCoordinatesCardEffect(board, { x: 1, y: 0 });
+            expect(result).toBe('merge');
+        });
+    });
+
 
     function resetBoard() {
         board = { width: 7, height: 7, tileChains: [] };
