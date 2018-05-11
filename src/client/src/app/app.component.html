@@ -25,3 +25,8 @@
     </div>
   </div>
 </div>
+
+<div>
+  <h2>Hotels</h2>
+  <span *ngFor="let hotel of hotels$ | async; let i = index;" (click)="onHotelClick(i)">{{ hotel.name }} </span>
+</div>

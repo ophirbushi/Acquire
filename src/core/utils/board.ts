@@ -98,3 +98,30 @@ export function isMergeLegal(board: Board, coordinates: Coordinates, unmergeable
         .filter(chain => chain.coordinatesList.length >= unmergeableHotelSize)
         .length < 2;
 }
+
+export function mergeTileChains(board: Board, coordinates: Coordinates): Board {
+    const boardClone: Board = cloneBoard(board);
+    const tileChain = getTileChain(boardClone, coordinates);
+    const neighbors = getNeighboringTileChains(boardClone, coordinates);
+
+    neighbors.forEach((neighbor) => {
+        const index = boardClone.tileChains.findIndex(chain => chain === neighbor);
+        tileChain.coordinatesList.push(...neighbor.coordinatesList.splice(0, neighbor.coordinatesList.length));
+        boardClone.tileChains.splice(index, 1);
+    });
+
+    return boardClone;
+}
+
+export function addTileChain(board: Board, coordinatesList: Coordinates[], hotelName: string): Board {
+    const boardClone: Board = cloneBoard(board);
+    boardClone.tileChains.push({ coordinatesList, hotelName });
+    return boardClone;
+}
+
+export function cloneBoard(board: Board): Board {
+    return {
+        ...board,
+        tileChains: board.tileChains.map(chain => ({ ...chain, coordinatesList: chain.coordinatesList.slice() }))
+    };
+}

@@ -4,7 +4,7 @@ import { Acquire, GiveCoordinatesCardsToPlayerPayload, ChooseCoordinatesCardPayl
 import { AcquireActions } from './actions';
 import {
     Player, Coordinates, getCoordinatesCardEffect, getCoordinatesCardLegalStatus, Hotel, getTileChain, getNeighboringCoordinatesList,
-    Board, getNeighboringTileChains
+    Board, getNeighboringTileChains, addTileChain, cloneBoard, mergeTileChains
 } from '../../core';
 import { generateCoordinatesCards, generateStocksForPlayer } from './utils';
 import { acquireInitialState, acquireDefaultConfig } from './init';
@@ -34,6 +34,9 @@ export const acquireReducer = new Reducer<Acquire, AcquireActions>(
         }
         if (this.is('putCoordinatesCardOnBoard', action)) {
             return putCoordinatesCardOnBoard(state);
+        }
+        if (this.is('setupHotel', action, payload)) {
+            return setupHotel(state, payload);
         }
         return state;
     }
@@ -138,26 +141,32 @@ function putCoordinatesCardOnBoard(state: Acquire): Acquire {
     const { chosenCoordinatesCard, chosenCoordinatesCardEffect } = state;
     const { coordinates } = chosenCoordinatesCard;
 
-    const board: Board = { ...state.board, tileChains: state.board.tileChains.slice() };
+    let board: Board = cloneBoard(state.board);
 
     if (chosenCoordinatesCardEffect === 'none') {
-        board.tileChains.push({ coordinatesList: [coordinates], hotelName: Hotel.NEUTRAL });
+        board = addTileChain(board, [coordinates], Hotel.NEUTRAL);
     } else if (chosenCoordinatesCardEffect === 'enlarge') {
-
-        const tileChain = { coordinatesList: [coordinates], hotelName: Hotel.NEUTRAL };
-        const neighbors = getNeighboringTileChains(board, coordinates);
-
-        neighbors.forEach((neighbor) => {
-            tileChain.coordinatesList.push(...neighbor.coordinatesList.splice(0,
-                neighbor.coordinatesList.length));
-            const index = board.tileChains.findIndex(chain => chain === neighbor);
-            board.tileChains.splice(index, 1);
-        });
-
-        board.tileChains.push(tileChain);
+        board = addTileChain(board, [coordinates], Hotel.NEUTRAL);
+        board = mergeTileChains(board, coordinates);
     } else {
         throw new Error('putCoordinatesCardOnBoard should only be called on "none" and "enlarge" effects');
     }
 
     return { ...state, board };
 }
+
+function setupHotel(state: Acquire, hotelIndex: number): Acquire {
+    const { chosenCoordinatesCard, config } = state;
+    const { coordinates } = chosenCoordinatesCard;
+
+    const hotels = config.hotels;
+    const hotel = hotels[hotelIndex];
+
+    let board: Board = cloneBoard(state.board);
+
+    board = addTileChain(board, [coordinates], hotel.name);
+    board = mergeTileChains(board, coordinates);
+
+    return { ...state, board };
+}
+

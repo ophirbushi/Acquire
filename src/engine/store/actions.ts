@@ -10,4 +10,5 @@ export interface AcquireActions {
     putCoordinatesCardOnBoard: null;
     endTurn: null;
     setCurrentPlayerIndex: number;
+    setupHotel: number;
 }

@@ -11,8 +11,10 @@ export class StateService {
 
     get snapshot(): Acquire { return this.store.value; }
 
-    select<K extends keyof Acquire>(key: K): Observable<Acquire[K]> {
-        return this.store.select(key);
+    select<T>(mapFn: (state: Acquire) => T): Observable<T>;
+    select<K extends keyof Acquire>(key: K): Observable<Acquire[K]>;
+    select(selector) {
+        return this.store.select(selector);
     }
 
     setPhaseName(phaseName: PhaseName) {
@@ -41,6 +43,10 @@ export class StateService {
 
     chooseCoordinatesCard(payload: ChooseCoordinatesCardPayload) {
         this.store.dispatch('chooseCoordinatesCard', payload);
+    }
+
+    setupHotel(index: number) {
+        this.store.dispatch('setupHotel', index);
     }
 
     putCoordinatesCardOnBoard() {

@@ -3,7 +3,7 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 import { AcquireEngine, InputProvider } from '../../../engine';
 import { Acquire, AcquireConfig } from '../../../engine/store';
 import { Observable } from 'rxjs/Observable';
-import { Player, Board, getTileChain, CoordinatesCard, Coordinates } from '../../../core';
+import { Player, Board, getTileChain, CoordinatesCard, Coordinates, Hotel } from '../../../core';
 
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { map, take, filter, tap } from 'rxjs/operators';
@@ -17,8 +17,10 @@ export class AppComponent implements OnInit, InputProvider {
   engine: AcquireEngine;
   players$: Observable<Player[]>;
   board$: Observable<Board>;
-  cardClick$ = new EventEmitter<{ playerIndex: number, cardIndex: number }>();
   currentPlayerIndex$: Observable<number>;
+  hotels$: Observable<Hotel[]>;
+  cardClick$ = new EventEmitter<{ playerIndex: number, cardIndex: number }>();
+  hotelClick$ = new EventEmitter<number>();
   hoveredCoordinates: Coordinates = { x: -1, y: -1 };
   message: string = '';
 
@@ -33,6 +35,7 @@ export class AppComponent implements OnInit, InputProvider {
     this.board$ = this.engine.stateService.select('board');
     this.players$ = this.engine.stateService.select('players');
     this.currentPlayerIndex$ = this.engine.stateService.select('currentPlayerIndex');
+    this.hotels$ = this.engine.stateService.select(state => state.config ? state.config.hotels : []);
 
     this.engine.go();
 
@@ -54,9 +57,18 @@ export class AppComponent implements OnInit, InputProvider {
           .pipe(
             filter(e => e.playerIndex === state.currentPlayerIndex),
             take(1),
-            map(e => e.cardIndex),
-        )
+            map(e => e.cardIndex)
+          )
           .toPromise();
+
+      case 'setUp':
+        this.message = `player ${state.currentPlayerIndex + 1} - choose a hotel to setup:`;
+        return this.hotelClick$
+          .pipe(
+            take(1)
+          )
+          .toPromise();
+
       default:
         debugger;
         break;
@@ -125,6 +137,10 @@ export class AppComponent implements OnInit, InputProvider {
       const { currentPlayerIndex } = this.engine.stateService.snapshot;
       this.cardClick$.emit({ playerIndex: currentPlayerIndex, cardIndex: this.getCurrentPlayerCardIndex(x, y) });
     }
+  }
+
+  onHotelClick(index: number) {
+    this.hotelClick$.emit(index);
   }
 
   enumerate(x: number): number[] {
